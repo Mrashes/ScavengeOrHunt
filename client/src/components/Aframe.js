@@ -19,7 +19,7 @@ class Aframe extends Component {
         // const colors = ['red', 'orange', 'yellow', 'green', 'blue'];
         this.setState({
             // color: colors[Math.floor(Math.random() * colors.length)],
-            counter: this.state.counter += 1
+            counter: this.state.counter + 1
         });
         console.log(this.state.counter)
     }
@@ -72,8 +72,17 @@ class Aframe extends Component {
 
                     </Entity>
 
-                    <Entity primitive="a-camera">
-                        <Entity primitive="a-cursor" animation__click={{property: 'scale', startEvents: 'click', from: '0.1 0.1 0.1', to: '1 1 1', dur: 150}}/>
+                    <Entity primitive="a-camera" wasd-controls-enabled="false">
+                        <Entity 
+                            primitive="a-cursor" 
+                            animation__click={{
+                                property: 'scale', 
+                                startEvents: 'click', 
+                                from: '0.1 0.1 0.1', 
+                                to: '1 1 1', 
+                                dur: 150
+                            }}
+                        />
                     </Entity>
 
                 </Scene>
