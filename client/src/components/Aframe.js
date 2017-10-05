@@ -5,6 +5,9 @@ import 'aframe';
 import {Entity, Scene} from 'aframe-react';
 //https://github.com/ngokevin/aframe-react
 
+//note localtunnel.me -- use for phone testing
+
+
 class Aframe extends Component {
 
     state = {
@@ -18,6 +21,7 @@ class Aframe extends Component {
             // color: colors[Math.floor(Math.random() * colors.length)],
             counter: this.state.counter += 1
         });
+        console.log(this.state.counter)
     }
 
     componentDidMount() {
@@ -39,7 +43,18 @@ class Aframe extends Component {
         return(
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
-                <Scene events={{click: this.changeColor.bind(this)}}>
+                <Scene>
+
+                    {/* <a-assets>
+                        <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg"/>
+                        <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg"/>
+                    </a-assets>
+
+                    <Entity primitive="a-plane" src="#groundTexture" rotation="-90 0 0" height="100" width="100"/>
+                    <Entity primitive="a-light" type="ambient" color="#445451"/>
+                    <Entity primitive="a-light" type="point" intensity="2" position="2 4 4"/>
+                    <Entity primitive="a-sky" height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"/> */}
+
 
                     <Entity text={{value: "clicks: " + this.state.counter, align: 'center'}} position={{x: 0, y: 1.5, z: -1}}/>
 
@@ -56,8 +71,14 @@ class Aframe extends Component {
                             material={{color: '#24CAFF'}}/>
 
                     </Entity>
+
+                    <Entity primitive="a-camera">
+                        <Entity primitive="a-cursor" animation__click={{property: 'scale', startEvents: 'click', from: '0.1 0.1 0.1', to: '1 1 1', dur: 150}}/>
+                    </Entity>
+
                 </Scene>
-                <video></video>
+
+                <video className="unselectable"></video>
             </div>
         )
     }
