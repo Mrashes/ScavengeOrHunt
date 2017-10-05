@@ -19,6 +19,8 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
+    "aframe": "^0.7.0",
+    "aframe-react": "^4.3.0",
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
