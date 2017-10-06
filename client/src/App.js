@@ -4,7 +4,6 @@ import Aframe from './components/Aframe'
 import Geolocation from './components/Geolocation'
 
 class App extends Component {
-
     render() {
         return(
             <div>

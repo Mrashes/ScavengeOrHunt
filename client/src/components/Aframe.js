@@ -26,8 +26,9 @@ class Aframe extends Component {
     }
 
     stopIt = () => {
+        // Show Win screen
         this.setState({
-            counter: this.state.counter + 1
+            counter: 0
         });
     }
 

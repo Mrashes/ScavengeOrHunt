@@ -13,30 +13,41 @@ class Geolocation extends Component {
         this.getDestinationLocation();
     }
 
+    compareLocations = () => {
+        if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
+            //Launch Aframe
+            console.log('Aframe launch')
+        }
+        else {
+            //Respond with arrow to point/
+        }
+    }
+
     setCurrLatLon = (lat, lon) =>{
+        const currlat = Math.round(10000*lat)/10000;
+        const currlon = Math.round(10000*lon)/10000;
         this.setState({
-            currLat: lat,
-            currLon: lon
+            currLat: currlat,
+            currLon: currlon
         });
     }
 
     getDestinationLocation = () => {
         //Ajax for Destination data
         //fornow
+        // Math rounds to 5 decimals
+        const homelat = Math.round(10000*41.89333)/10000;
+        const homelon = Math.round(10000*-87.78125)/10000;
         this.setState({
-            destLat: 0,
-            destLon: 0
+            destLat: homelat,
+            destLon: homelon
         });
     }
 
     getCurrentLocation = () => {
         function geo_success(position) {
             this.setCurrLatLon(position.coords.latitude, position.coords.longitude);
-            if (this.state.currLat === this.state.destLat){
-                if (this.state.currLon === this.state.destLon){
-                    //They both match so do the thing
-                }
-            }
+            this.compareLocations()
         }
         
         function geo_error() {
