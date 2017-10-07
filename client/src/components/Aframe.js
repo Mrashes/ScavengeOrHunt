@@ -76,7 +76,7 @@ class Aframe extends Component {
 
     makeCamera = () => {
         // facingMode environment means it'll prefer the back camera if available
-        const constraints = { video: true, facingMode:"environment" }; 
+        const constraints = { video: { facingMode:{exact:"environment"} } };
         
         navigator.mediaDevices.getUserMedia(constraints)
             .then(function(mediaStream) {
@@ -94,13 +94,16 @@ class Aframe extends Component {
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
+                    
+                    {/* <Entity primitive="a-sky" transparent="true"/> */}
+                    {/* <Entity primitive="a-plane" transparent="true" /> */}
 
                     <Entity text={{value: "clicks: " + this.state.counter, align: 'center'}} position={this.state.wordPosition} rotation={this.state.wordRotation}/>
 
                     <Entity id="box"
                         geometry={{primitive: 'box'}}
                         material={{color: this.state.color, opacity: 0.6}}
-                        animation__rotate={{property: 'rotation', dur: 5000, loop: true, to: '360 360 360'}}
+                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', restartEvents: "click", to: '360 360 360'}}
                         position={this.state.boxPosition}
                         rotation={{x: 90, y: 90, z: 90}}
                         events={{click: this.counterIncrement}}>
@@ -127,8 +130,7 @@ class Aframe extends Component {
                             primitive="a-cursor" 
                             animation__click={{
                                 property: 'scale', 
-                                startEvents: 'click',
-                                pauseEvents: 'animation-pause',
+                                restartEvents: "click",
                                 from: '0.1 0.1 0.1', 
                                 to: '1 1 1', 
                                 dur: 150
