@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
+    "aframe-animation-component": "^3.2.5",
     "axios": "^0.16.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
