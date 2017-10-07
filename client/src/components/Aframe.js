@@ -7,7 +7,6 @@ import {Entity, Scene} from 'aframe-react';
 
 //note localtunnel.me -- use for phone testing
 
-
 class Aframe extends Component {
 
     state = {
@@ -73,7 +72,6 @@ class Aframe extends Component {
             counter: 0,
             end: true
         });
-
     }
 
     makeCamera = () => {
