@@ -13,9 +13,9 @@ class Aframe extends Component {
         color: 'red',
         counter: 0,
         end: false,
-        boxPosition: {x: 0, y: 3, z: -3},
-        wordPosition: {x: 0, y: 1.5, z: -1},
-        wordRotation: {x:0, y:0, z:0}
+        boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
+        wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
+        wordRotation: {'x':0, 'y':0, 'z':0}
     }
 
     componentDidMount() {
@@ -33,22 +33,28 @@ class Aframe extends Component {
             counter: this.state.counter + 1
         });
         const counter = this.state.counter
-        if (counter % 5 == 0) {
+        if (counter == 1) {
             //move to another side
             this.moveBox()
         }
-        if (this.state.counter >= 49) {
+        if (this.state.counter >= 1) {
             this.stopIt()
         }
     }
 
     moveBox = () => {
-        const boxPosList = [{x: 0, y: 3, z: -3}, {x: -3, y: 3, z: 0}, {x: 0, y: 3, z: 3}, {x: 3, y: 3, z: 0}]
-        const index = this.getRandomInt(0, boxPosList.length)
-        this.setState({
-            boxPosition: boxPosList[index]
-        });
-        this.moveWords(index)
+        const boxPosList = [{'id':0, 'x': 0, 'y': 3, 'z': -3}, {'id':1, 'x': -3, 'y': 3, 'z': 0}, {'id':2, 'x': 0, 'y': 3, 'z': 3}, {'id':3, 'x': 3, 'y': 3, 'z': 0}]
+        const boxPosition = this.state.boxPosition
+        
+        const movedBox = boxPosList.filter(object => object["id"] !== boxPosition["id"])
+
+        console.log(movedBox)
+
+        // const index = this.getRandomInt(0, boxPosList.length)
+        // this.setState({
+        //     boxPosition: boxPosList[index]
+        // });
+        // this.moveWords(index)
     }
 
     moveWords = (index) => {
@@ -86,7 +92,9 @@ class Aframe extends Component {
                     video.play();
                 };
             })
-            .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+            .catch(function(err) {
+                console.log(err.name + ": " + err.message); 
+            }); // always check for errors at the end.
     }
 
     render() {
@@ -96,9 +104,7 @@ class Aframe extends Component {
                 <Scene>
                     
                     {/* <Entity primitive="a-sky" transparent="true"/> */}
-                    {/* <Entity primitive="a-plane" transparent="true" /> */}
-
-                    <Entity text={{value: "clicks: " + this.state.counter, align: 'center'}} position={this.state.wordPosition} rotation={this.state.wordRotation}/>
+                    {/* <Entity primitive="a-plane" transparent="true"/> */}
 
                     <Entity id="box"
                         geometry={{primitive: 'box'}}
@@ -139,6 +145,8 @@ class Aframe extends Component {
                     </Entity>
 
                 </Scene>
+
+                <p className="clicks">clicks: {this.state.counter}</p>
 
                 <video className="unselectable"></video>
             </div>
