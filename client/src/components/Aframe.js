@@ -7,35 +7,77 @@ import {Entity, Scene} from 'aframe-react';
 
 //note localtunnel.me -- use for phone testing
 
-
 class Aframe extends Component {
 
     state = {
         color: 'red',
         counter: 0,
-        end: false
+        end: false,
+        boxPosition: {x: 0, y: 3, z: -3},
+        wordPosition: {x: 0, y: 1.5, z: -1},
+        wordRotation: {x:0, y:0, z:0}
+    }
+
+    componentDidMount() {
+        this.makeCamera()
+    }
+
+    getRandomInt = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
     counterIncrement = () => {
         this.setState({
             counter: this.state.counter + 1
         });
-        if (this.state.counter >= 50) {
+        const counter = this.state.counter
+        if (counter % 5 == 0) {
+            //move to another side
+            this.moveBox()
+        }
+        if (this.state.counter >= 49) {
             this.stopIt()
         }
+    }
+
+    moveBox = () => {
+        const boxPosList = [{x: 0, y: 3, z: -3}, {x: -3, y: 3, z: 0}, {x: 0, y: 3, z: 3}, {x: 3, y: 3, z: 0}]
+        const index = this.getRandomInt(0, boxPosList.length)
+        this.setState({
+            boxPosition: boxPosList[index]
+        });
+        this.moveWords(index)
+    }
+
+    moveWords = (index) => {
+        const wordPosList = [{x: 0, y: 1.5, z: -1}, {x: -1, y: 1.5, z: 0}, {x: 0, y: 1.5, z: 1}, {x: 1, y: 1.5, z: 0}]
+        this.setState({
+            wordPosition: wordPosList[index]
+        });
+        this.rotateWords(index)
+    }
+
+    rotateWords = (index) => {
+        const wordRotList = [{x: 0, y: 0, z: 0}, {x: 0, y: 90, z: 0}, {x: 0, y: 180, z: 0}, {x: 0, y: 270, z: 0}]
+        this.setState({
+            wordRotation: wordRotList[index]
+        }); 
     }
 
     stopIt = () => {
         // Show Win screen
         this.setState({
-            counter: 0
+            counter: 0,
+            end: true
         });
     }
 
-    componentDidMount() {
-        // Prefer camera resolution nearest to 1280x720.
-        var constraints = { video: true, facingMode:"environment" }; 
-
+    makeCamera = () => {
+        // facingMode environment means it'll prefer the back camera if available
+        const constraints = { video: { facingMode:{exact:"environment"} } };
+        
         navigator.mediaDevices.getUserMedia(constraints)
             .then(function(mediaStream) {
                 var video = document.querySelector('video');
@@ -52,14 +94,17 @@ class Aframe extends Component {
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
+                    
+                    {/* <Entity primitive="a-sky" transparent="true"/> */}
+                    {/* <Entity primitive="a-plane" transparent="true" /> */}
 
-                    <Entity text={{value: "clicks: " + this.state.counter, align: 'center'}} position={{x: 0, y: 1.5, z: -1}}/>
+                    <Entity text={{value: "clicks: " + this.state.counter, align: 'center'}} position={this.state.wordPosition} rotation={this.state.wordRotation}/>
 
                     <Entity id="box"
                         geometry={{primitive: 'box'}}
                         material={{color: this.state.color, opacity: 0.6}}
-                        animation__rotate={{property: 'rotation', dur: 5000, loop: true, to: '360 360 360'}}
-                        position={{x: 0, y: 3, z: -3}}
+                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', restartEvents: "click", to: '360 360 360'}}
+                        position={this.state.boxPosition}
                         rotation={{x: 90, y: 90, z: 90}}
                         events={{click: this.counterIncrement}}>
                         
@@ -85,7 +130,7 @@ class Aframe extends Component {
                             primitive="a-cursor" 
                             animation__click={{
                                 property: 'scale', 
-                                startEvents: 'click', 
+                                restartEvents: "click",
                                 from: '0.1 0.1 0.1', 
                                 to: '1 1 1', 
                                 dur: 150
