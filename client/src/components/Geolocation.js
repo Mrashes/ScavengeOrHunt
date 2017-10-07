@@ -19,7 +19,7 @@ class Geolocation extends Component {
             console.log('Aframe launch')
         }
         else {
-            //Respond with arrow to point/
+            //Respond with arrow to point (?)
         }
     }
 
@@ -54,7 +54,7 @@ class Geolocation extends Component {
             console.log("Sorry, no position available.");
         }
         
-        var geo_options = {
+        const geo_options = {
             enableHighAccuracy: true,
             maximumAge        : Infinity, 
             timeout           : Infinity

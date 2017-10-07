@@ -7,8 +7,8 @@ class App extends Component {
     render() {
         return(
             <div>
-                <Geolocation />
-                {/* <Aframe /> */}
+                {/* <Geolocation /> */}
+                <Aframe />
             </div>
         )
     }
