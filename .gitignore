@@ -20,3 +20,5 @@ client/node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# MONGODB_URI: mongodb://heroku_039r6cl6:o30m7fr93tnnnefefu1bfo5ek0@ds013475.mlab.com:13475/heroku_039r6cl6
