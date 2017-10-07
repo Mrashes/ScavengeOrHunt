@@ -19,7 +19,7 @@ class Geolocation extends Component {
             console.log('Aframe launch')
         }
         else {
-            //Respond with arrow to point/
+            //Keep going
         }
     }
 
@@ -35,7 +35,6 @@ class Geolocation extends Component {
     getDestinationLocation = () => {
         //Ajax for Destination data
         //fornow
-        // Math rounds to 5 decimals
         const homelat = Math.round(10000*41.89333)/10000;
         const homelon = Math.round(10000*-87.78125)/10000;
         this.setState({
@@ -54,7 +53,7 @@ class Geolocation extends Component {
             console.log("Sorry, no position available.");
         }
         
-        var geo_options = {
+        const geo_options = {
             enableHighAccuracy: true,
             maximumAge        : Infinity, 
             timeout           : Infinity
