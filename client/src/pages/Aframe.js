@@ -3,6 +3,7 @@ import './aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
+import { Redirect } from "react-router-dom";
 //https://github.com/ngokevin/aframe-react
 
 //note localtunnel.me -- use for phone testing
@@ -12,10 +13,11 @@ class Aframe extends Component {
     state = {
         color: 'red',
         counter: 0,
-        end: false,
+        counterTarget: 4,
+        redirect: false,
         boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
-        wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
-        wordRotation: {'x':0, 'y':0, 'z':0}
+        // wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
+        // wordRotation: {'x':0, 'y':0, 'z':0}
     }
 
     componentDidMount() {
@@ -33,50 +35,47 @@ class Aframe extends Component {
             counter: this.state.counter + 1
         });
         const counter = this.state.counter
-        if (counter == 1) {
-            //move to another side
-            this.moveBox()
-        }
-        if (this.state.counter >= 1) {
+        //move to another side
+        this.moveBox()
+        if (counter === this.state.counterTarget) {
+            //reset counter to 0
             this.stopIt()
         }
+        // if (this.state.counter >= 1) {
+        //     this.stopIt()
+        // }
     }
 
     moveBox = () => {
         const boxPosList = [{'id':0, 'x': 0, 'y': 3, 'z': -3}, {'id':1, 'x': -3, 'y': 3, 'z': 0}, {'id':2, 'x': 0, 'y': 3, 'z': 3}, {'id':3, 'x': 3, 'y': 3, 'z': 0}]
         const boxPosition = this.state.boxPosition
-        
-        const movedBox = boxPosList.filter(object => object["id"] !== boxPosition["id"])
-
-        console.log(movedBox)
-
-        // const index = this.getRandomInt(0, boxPosList.length)
-        // this.setState({
-        //     boxPosition: boxPosList[index]
-        // });
+        const boxListMinusCurr = boxPosList.filter(object => object["id"] !== boxPosition["id"])
+        const index = this.getRandomInt(0, boxListMinusCurr.length)
+        this.setState({
+            boxPosition: boxListMinusCurr[index]
+        });
         // this.moveWords(index)
     }
 
-    moveWords = (index) => {
-        const wordPosList = [{x: 0, y: 1.5, z: -1}, {x: -1, y: 1.5, z: 0}, {x: 0, y: 1.5, z: 1}, {x: 1, y: 1.5, z: 0}]
-        this.setState({
-            wordPosition: wordPosList[index]
-        });
-        this.rotateWords(index)
-    }
+    // moveWords = (index) => {
+    //     const wordPosList = [{x: 0, y: 1.5, z: -1}, {x: -1, y: 1.5, z: 0}, {x: 0, y: 1.5, z: 1}, {x: 1, y: 1.5, z: 0}]
+    //     this.setState({
+    //         wordPosition: wordPosList[index]
+    //     });
+    //     this.rotateWords(index)
+    // }
 
-    rotateWords = (index) => {
-        const wordRotList = [{x: 0, y: 0, z: 0}, {x: 0, y: 90, z: 0}, {x: 0, y: 180, z: 0}, {x: 0, y: 270, z: 0}]
-        this.setState({
-            wordRotation: wordRotList[index]
-        }); 
-    }
+    // rotateWords = (index) => {
+    //     const wordRotList = [{x: 0, y: 0, z: 0}, {x: 0, y: 90, z: 0}, {x: 0, y: 180, z: 0}, {x: 0, y: 270, z: 0}]
+    //     this.setState({
+    //         wordRotation: wordRotList[index]
+    //     }); 
+    // }
 
     stopIt = () => {
         // Show Win screen
         this.setState({
-            counter: 0,
-            end: true
+            redirect: true
         });
     }
 
@@ -98,6 +97,10 @@ class Aframe extends Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            return (<Redirect push to="/start" />)
+        }
+
         return(
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>

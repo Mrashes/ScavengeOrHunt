@@ -38,7 +38,7 @@ class Start extends Component {
               <FormBtn
                 className="btn btn-success"
                 role="button"
-                to="/aframe"
+                to="/start"
                 disabled={!(this.state.username)}
               >
                 Start Hunt
