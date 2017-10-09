@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Aframe from './pages/Aframe';
 import Game from './pages/Game';
 import PlayGame from './pages/PlayGame'
+import NewGame from './pages/NewGame';
 
 const App = () => 
     <Router>
@@ -11,7 +12,7 @@ const App = () =>
         <Switch>
             <Route exact path="/" component={Game} />
             <Route exact path="/start" component={PlayGame} />
-            {/* <Route exact path="/aframe" component={Aframe} /> */}
+            <Route exact path="/newgame" component={NewGame} />
         </Switch>
         </div>
     </Router>;
