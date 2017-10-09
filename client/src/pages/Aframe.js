@@ -13,8 +13,8 @@ class Aframe extends Component {
     state = {
         color: 'red',
         counter: 0,
-        counterTarget: 4,
-        redirect: false,
+        counterTarget: 2,
+        // redirect: this.props.redirect,
         boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
         // wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
         // wordRotation: {'x':0, 'y':0, 'z':0}
@@ -74,9 +74,7 @@ class Aframe extends Component {
 
     stopIt = () => {
         // Show Win screen
-        this.setState({
-            redirect: true
-        });
+        this.props.redirect()
     }
 
     makeCamera = () => {
@@ -97,9 +95,9 @@ class Aframe extends Component {
     }
 
     render() {
-        if (this.state.redirect) {
-            return (<Redirect push to="/start" />)
-        }
+        // if (this.state.redirect) {
+        //     return (<Redirect push to="/start" />)
+        // }
 
         return(
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js

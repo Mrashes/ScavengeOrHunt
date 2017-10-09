@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
+import Aframe from './Aframe.js'
 
 class PlayGame extends Component {
     state = {
@@ -19,17 +20,31 @@ class PlayGame extends Component {
     }
 
     compareLocations = () => {
-        console.log('it compared')
+        // console.log('it compared')
 
         //if location comparison correct then display the aframe environment
         if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
-            console.log('link to aframe')
+            // console.log('link to aframe')
             this.setState({
                 redirect: true
             })
+            // console.log(this.state.turn)
         }
         else {
             //Keep going
+        }
+    }
+
+    handleRedirect = () => {
+        this.setState({
+            turn: this.state.turn+1,
+            redirect: false
+        })
+        if (this.state.turn >= 10){
+            console.log("End game")
+        }
+        else {
+            //Get next location
         }
     }
 
@@ -92,7 +107,8 @@ class PlayGame extends Component {
 
     render() {
         if (this.state.redirect) {
-            return (<Redirect push to="/aframe" />)
+            // return (<Redirect push to="/aframe" />)
+            return (<Aframe redirect={this.handleRedirect}/>)
         }
         return(
             <div>
@@ -105,6 +121,9 @@ class PlayGame extends Component {
 
                 <p>Hint</p>
                 <p>{this.state.hint}</p>
+
+                <p>Turn</p>
+                <p>{this.state.turn}</p>
 
                 <button onClick={this.same}>Make the same</button>
             </div>

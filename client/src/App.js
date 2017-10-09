@@ -11,7 +11,7 @@ const App = () =>
         <Switch>
             <Route exact path="/" component={Game} />
             <Route exact path="/start" component={PlayGame} />
-            <Route exact path="/aframe" component={Aframe} />
+            {/* <Route exact path="/aframe" component={Aframe} /> */}
         </Switch>
         </div>
     </Router>;
