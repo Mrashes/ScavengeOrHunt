@@ -3,6 +3,7 @@ import './aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
+import { Redirect } from "react-router-dom";
 //https://github.com/ngokevin/aframe-react
 
 //note localtunnel.me -- use for phone testing
@@ -11,15 +12,17 @@ class Aframe extends Component {
 
     state = {
         color: 'red',
+        shape: 'box',
         counter: 0,
-        end: false,
-        boxPosition: {x: 0, y: 3, z: -3},
-        wordPosition: {x: 0, y: 1.5, z: -1},
-        wordRotation: {x:0, y:0, z:0}
+        counterTarget: 4,
+        boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
+        // wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
+        // wordRotation: {'x':0, 'y':0, 'z':0}
     }
 
     componentDidMount() {
         this.makeCamera()
+        this.changeShapeProperties()
     }
 
     getRandomInt = (min, max) => {
@@ -33,45 +36,58 @@ class Aframe extends Component {
             counter: this.state.counter + 1
         });
         const counter = this.state.counter
-        if (counter % 5 == 0) {
-            //move to another side
-            this.moveBox()
-        }
-        if (this.state.counter >= 49) {
+        //move to another side
+        this.moveBox()
+        if (counter === this.state.counterTarget) {
+            //reset counter to 0
             this.stopIt()
         }
+        // if (this.state.counter >= 1) {
+        //     this.stopIt()
+        // }
+    }
+
+    changeShapeProperties = () => {
+        const shape = ['box','cone','cylinder','sphere','ring','torus'];
+        const color = ['red', 'orange', 'yellow', 'green', 'blue'];
+        const randomShape = this.getRandomInt(0, shape.length-1);
+        const randomColor = this.getRandomInt(0, color.length-1);
+        this.setState({
+            shape: shape[randomShape],
+            color: color[randomColor]
+        })
     }
 
     moveBox = () => {
-        const boxPosList = [{x: 0, y: 3, z: -3}, {x: -3, y: 3, z: 0}, {x: 0, y: 3, z: 3}, {x: 3, y: 3, z: 0}]
-        const index = this.getRandomInt(0, boxPosList.length)
+        const boxPosList = [{'id':0, 'x': 0, 'y': 3, 'z': -3}, {'id':1, 'x': -3, 'y': 3, 'z': 0}, {'id':2, 'x': 0, 'y': 3, 'z': 3}, {'id':3, 'x': 3, 'y': 3, 'z': 0}]
+        const boxPosition = this.state.boxPosition
+        const boxListMinusCurr = boxPosList.filter(object => object["id"] !== boxPosition["id"])
+        const index = this.getRandomInt(0, boxListMinusCurr.length)
         this.setState({
-            boxPosition: boxPosList[index]
+            boxPosition: boxListMinusCurr[index]
         });
-        this.moveWords(index)
+        // this.moveWords(index)
     }
 
-    moveWords = (index) => {
-        const wordPosList = [{x: 0, y: 1.5, z: -1}, {x: -1, y: 1.5, z: 0}, {x: 0, y: 1.5, z: 1}, {x: 1, y: 1.5, z: 0}]
-        this.setState({
-            wordPosition: wordPosList[index]
-        });
-        this.rotateWords(index)
-    }
+    // moveWords = (index) => {
+    //     const wordPosList = [{x: 0, y: 1.5, z: -1}, {x: -1, y: 1.5, z: 0}, {x: 0, y: 1.5, z: 1}, {x: 1, y: 1.5, z: 0}]
+    //     this.setState({
+    //         wordPosition: wordPosList[index]
+    //     });
+    //     this.rotateWords(index)
+    // }
 
-    rotateWords = (index) => {
-        const wordRotList = [{x: 0, y: 0, z: 0}, {x: 0, y: 90, z: 0}, {x: 0, y: 180, z: 0}, {x: 0, y: 270, z: 0}]
-        this.setState({
-            wordRotation: wordRotList[index]
-        }); 
-    }
+    // rotateWords = (index) => {
+    //     const wordRotList = [{x: 0, y: 0, z: 0}, {x: 0, y: 90, z: 0}, {x: 0, y: 180, z: 0}, {x: 0, y: 270, z: 0}]
+    //     this.setState({
+    //         wordRotation: wordRotList[index]
+    //     }); 
+    // }
 
     stopIt = () => {
         // Show Win screen
-        this.setState({
-            counter: 0,
-            end: true
-        });
+        this.props.destination()
+        this.props.redirect()
     }
 
     makeCamera = () => {
@@ -86,22 +102,26 @@ class Aframe extends Component {
                     video.play();
                 };
             })
-            .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+            .catch(function(err) {
+                console.log(err.name + ": " + err.message); 
+            }); // always check for errors at the end.
     }
 
     render() {
+        // if (this.state.redirect) {
+        //     return (<Redirect push to="/start" />)
+        // }
+
         return(
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
                     
                     {/* <Entity primitive="a-sky" transparent="true"/> */}
-                    {/* <Entity primitive="a-plane" transparent="true" /> */}
-
-                    <Entity text={{value: "clicks: " + this.state.counter, align: 'center'}} position={this.state.wordPosition} rotation={this.state.wordRotation}/>
+                    {/* <Entity primitive="a-plane" transparent="true"/> */}
 
                     <Entity id="box"
-                        geometry={{primitive: 'box'}}
+                        geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}
                         animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', restartEvents: "click", to: '360 360 360'}}
                         position={this.state.boxPosition}
@@ -128,6 +148,7 @@ class Aframe extends Component {
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
                             primitive="a-cursor" 
+                            geometry={{primitive:'triangle', vertexA: '0 0.05 0', vertexB: '-0.05 -0.05 0', vertexC: '0.05 -0.05 0'}}
                             animation__click={{
                                 property: 'scale', 
                                 restartEvents: "click",
@@ -139,6 +160,8 @@ class Aframe extends Component {
                     </Entity>
 
                 </Scene>
+
+                <p className="clicks">clicks: {this.state.counter}</p>
 
                 <video className="unselectable"></video>
             </div>
