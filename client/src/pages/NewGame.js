@@ -23,11 +23,14 @@ class NewGame extends Component {
                 return location
             else{
                 const {name, value} = event.target;
-                this.setState({
-                    [name]: value
-                }) 
+                return {...location, [name]: value}
+                // this.setState({
+                //     [name]: value
+                // }) 
             }                
         })
+
+        this.setState({game: {...this.state.game, locations: newLocation}})
 
     }  
     
@@ -57,7 +60,7 @@ class NewGame extends Component {
             <div>
                 <form>
                     {game.locations.map((location, index) => (
-                        <div>
+                        <div key={index}>
                             <label htmlFor="locationNum">LocationNumber</label>
                             <input 
                                 type="number"
