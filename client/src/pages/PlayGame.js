@@ -6,17 +6,24 @@ class PlayGame extends Component {
     state = {
         currLat: 0,
         currLon: 0,
-        destArray: [],
+        destArray: [
+            [41.896763, -87.618765], 
+            [41.897219, -87.621640], 
+            [41.897165, -87.624567], 
+            [41.894346, -87.626708], 
+            [41.891395, -87.623934], 
+            [41.890068, -87.623594]],
         destLat: 0,
         destLon: 0,
+        destHint: "",
         turn: 0,
         redirect: false,
-        hint: "Where you go to school dummy"
+        hint: ['School', 'Modern Art', 'Water Tower', 'Driehaus', 'InterContinental', 'Pioneer Court']
     }
 
     componentDidMount() {
         this.getCurrentLocation();
-        this.getDestinationLocation();
+        this.getGameInfo();
     }
 
     compareLocations = () => {
@@ -26,8 +33,16 @@ class PlayGame extends Component {
         if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
             // console.log('link to aframe')
             this.setState({
-                redirect: true
+                turn: this.state.turn+1,
             })
+            if (this.state.turn >= this.state.destArray.length-1){
+                console.log("End game")
+            }
+            else {
+                this.setState({
+                    redirect: true
+                })
+            }
             // console.log(this.state.turn)
         }
         else {
@@ -37,15 +52,8 @@ class PlayGame extends Component {
 
     handleRedirect = () => {
         this.setState({
-            turn: this.state.turn+1,
             redirect: false
         })
-        if (this.state.turn >= 10){
-            console.log("End game")
-        }
-        else {
-            //Get next location
-        }
     }
 
     setCurrLatLon = (lat, lon) =>{
@@ -72,16 +80,17 @@ class PlayGame extends Component {
         this.compareLocations()
     }
 
-    getDestinationLocation = () => {
+    getGameInfo = () => {
         //Ajax for Destination data
-        //fornow
-        const homelat = Math.round(10000*41.89333)/10000;
-        const homelon = Math.round(10000*-87.7820)/10000;
-        const hint = "Where you go to school"
+        //for now
+        this.getDestinationLocation()
+    }
+
+    getDestinationLocation = () => {
         this.setState({
-            destLat: homelat,
-            destLon: homelon,
-            hint: hint
+            destLat: this.state.destArray[this.state.turn][0],
+            destLon: this.state.destArray[this.state.turn][1],
+            destHint: this.state.hint[this.state.turn]
         });
     }
 
@@ -108,7 +117,7 @@ class PlayGame extends Component {
     render() {
         if (this.state.redirect) {
             // return (<Redirect push to="/aframe" />)
-            return (<Aframe redirect={this.handleRedirect}/>)
+            return (<Aframe destination={this.getDestinationLocation} redirect={this.handleRedirect}/>)
         }
         return(
             <div>
@@ -120,7 +129,7 @@ class PlayGame extends Component {
                 <p>{this.state.destLon}</p>
 
                 <p>Hint</p>
-                <p>{this.state.hint}</p>
+                <p>{this.state.destHint}</p>
 
                 <p>Turn</p>
                 <p>{this.state.turn}</p>
