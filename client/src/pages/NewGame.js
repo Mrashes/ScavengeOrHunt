@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import API from "../utils/API"
 
 class NewGame extends Component {
     state = {
@@ -8,14 +9,16 @@ class NewGame extends Component {
                     locationNum: "",
                     clue: "",
                     latitude: "",
-                    longitude: ""
+                    longitude: "",
+                    hitcounter: Math.floor(Math.random()*6)
                 }]
         },
-        locationNum: "",
-        clue: "",
-        latitude: "",
-        longitude: ""
     }
+
+    handleGameIdChange = event => {
+        const {name, value} = event.target;
+        this.setState({game: {...this.state.game, [name]: value}})
+    }  
 
     handleInputChange = (index) => event => {
         const newLocation = this.state.game.locations.map((location, i) => {
@@ -23,41 +26,53 @@ class NewGame extends Component {
                 return location
             else{
                 const {name, value} = event.target;
-                this.setState({
-                    [name]: value
-                }) 
+                return {...location, [name]: value}
             }                
         })
+
+        this.setState({game: {...this.state.game, locations: newLocation}})
 
     }  
     
     handleAdd = event => {
         event.preventDefault();
-        let newLocation = {
-            locationNum: this.state.locationNum,
-            clue: this.state.clue,
-            latitude: this.state.latitude,
-            longitude: this.state.longitude
-        }
         let game = this.state.game
         let locations = this.state.game.locations
-        this.setState({game: {...game, locations: locations.concat([newLocation])}, 
-                        locationNum: "",
-                        clue: "",
-                        latitude: "",
-                        longitude: ""                        
+        this.setState({game: {...game, 
+                                locations: locations.concat([{
+                                                            locationNum: "", 
+                                                            clue: "", 
+                                                            latitude: "", 
+                                                            longitude: "",
+                                                            hitcounter: Math.floor(Math.random()*6)}])}, 
         })
 
     }
 
-    render(){
+    handleSubmit = event => {
+        event.preventDefault()
+        API.saveGame(this.state.game)
+        .then(res => this.setState({game: {...this.state.game, gameid: "", 
+                                                locations: [{locationNum: "", clue: "", latitude: "", longitude: ""}]}}))
+        .catch(err => console.log(err))
         console.log(this.state)
+    }
+
+    render(){
         let game = this.state.game
         return(
             <div>
                 <form>
+                    <label htmlFor="gameid">GameID</label>
+                    <input 
+                            type="text"
+                            value={game.gameid}
+                            onChange={this.handleGameIdChange}
+                            name="gameid"
+                            placeholder="Enter a Game ID (required)"
+                    />                    
                     {game.locations.map((location, index) => (
-                        <div>
+                        <div key={index}>
                             <label htmlFor="locationNum">LocationNumber</label>
                             <input 
                                 type="number"
@@ -97,7 +112,10 @@ class NewGame extends Component {
                     ))}                         
                     <button onClick = {this.handleAdd}>
                         Add Location
-                    </button>                                    
+                    </button>  
+                    <button onClick = {this.handleSubmit}>
+                        Submit
+                    </button>                                                        
                 </form>
             </div>
         )
