@@ -6,6 +6,6 @@ export default {
     },
 
     getGame: (gameid) => {
-        return axios.get("/api/game/:id", gameid)
+        return axios.get("/api/game/"+gameid)
     }
 }

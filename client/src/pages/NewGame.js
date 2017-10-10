@@ -10,7 +10,7 @@ class NewGame extends Component {
                     clue: "",
                     latitude: "",
                     longitude: "",
-                    hitcounter: Math.floor(Math.random()*6)
+                    hitcounter: (Math.floor(Math.random()*5))+1
                 }]
         },
     }
@@ -44,7 +44,7 @@ class NewGame extends Component {
                                                             clue: "", 
                                                             latitude: "", 
                                                             longitude: "",
-                                                            hitcounter: Math.floor(Math.random()*6)}])}, 
+                                                            hitcounter: (Math.floor(Math.random()*5))+1}])}, 
         })
 
     }
@@ -55,7 +55,6 @@ class NewGame extends Component {
         .then(res => this.setState({game: {...this.state.game, gameid: "", 
                                                 locations: [{locationNum: "", clue: "", latitude: "", longitude: ""}]}}))
         .catch(err => console.log(err))
-        console.log(this.state)
     }
 
     render(){
