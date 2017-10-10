@@ -7,6 +7,12 @@ module.exports = {
             .then(data => res.json(data))
             .catch(err => res.status(422).json(err))
     },
+    findGameById: function(req, res){
+        db.Game
+            .find({gameid: req.params.id})
+            .then(data => res.json(data))
+            .catch(err => res.status(422).json(err))
+    },    
     create: function(req, res){
         db.Game
             .create(req.body)
