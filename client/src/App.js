@@ -8,7 +8,7 @@ import NewGame from './pages/NewGame';
 
 const App = () => 
     <Router>
-        <div>
+        <div className="App">
         <Switch>
             <Route exact path="/" component={Game} />
             <Route exact path="/start" component={PlayGame} />
