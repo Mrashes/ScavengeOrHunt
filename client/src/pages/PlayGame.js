@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import Aframe from './Aframe.js'
+import API from '../utils/API.js'
+
+import axios from 'axios'
+
 
 class PlayGame extends Component {
     state = {
         currLat: 0,
         currLon: 0,
-        destArray: [
-            [41.896763, -87.618765], 
-            [41.897219, -87.621640], 
-            [41.897165, -87.624567], 
-            [41.894346, -87.626708], 
-            [41.891395, -87.623934], 
-            [41.890068, -87.623594]],
+        locations: {},
         destLat: 0,
         destLon: 0,
         destHint: "",
+        destClick: 0,
         turn: 0,
         redirect: false,
-        hint: ['School', 'Modern Art', 'Water Tower', 'Driehaus', 'InterContinental', 'Pioneer Court']
     }
 
     componentDidMount() {
@@ -35,7 +33,7 @@ class PlayGame extends Component {
             this.setState({
                 turn: this.state.turn+1,
             })
-            if (this.state.turn >= this.state.destArray.length-1){
+            if (this.state.turn >= this.state.locations.length-1){
                 console.log("End game")
             }
             else {
@@ -82,15 +80,29 @@ class PlayGame extends Component {
 
     getGameInfo = () => {
         //Ajax for Destination data
+        // API.getGame(1).then(res => {
+        //     console.log(res)
+        // })
+        axios.get("/api/game/").then(res => {
+            this.setState({
+                locations: res.data[0].locations
+            })
+            console.log(this.state.locations)
+            this.getDestinationLocation()
+        })
         //for now
-        this.getDestinationLocation()
     }
 
     getDestinationLocation = () => {
+        const lat = this.state.locations[this.state.turn].latitude
+        const lon = this.state.locations[this.state.turn].longitude
+        const destlat = Math.round(10000*lat)/10000;
+        const destlon = Math.round(10000*lon)/10000;
         this.setState({
-            destLat: this.state.destArray[this.state.turn][0],
-            destLon: this.state.destArray[this.state.turn][1],
-            destHint: this.state.hint[this.state.turn]
+            destLat: destlat,
+            destLon: destlon,
+            destHint: this.state.locations[this.state.turn].clue,
+            destClick: this.state.locations[this.state.turn].hitcounter
         });
     }
 
@@ -117,7 +129,10 @@ class PlayGame extends Component {
     render() {
         if (this.state.redirect) {
             // return (<Redirect push to="/aframe" />)
-            return (<Aframe destination={this.getDestinationLocation} redirect={this.handleRedirect}/>)
+            return (<Aframe 
+                        destination={this.getDestinationLocation} 
+                        redirect={this.handleRedirect}
+                        targetClicks={this.state.destClick}/>)
         }
         return(
             <div>

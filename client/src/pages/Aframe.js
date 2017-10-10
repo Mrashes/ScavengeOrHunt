@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import './aframe.css';
+
 import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
-import { Redirect } from "react-router-dom";
+
+// import { Redirect } from "react-router-dom";
+
+
+
+
 //https://github.com/ngokevin/aframe-react
 
 //note localtunnel.me -- use for phone testing
@@ -14,8 +20,9 @@ class Aframe extends Component {
         color: 'red',
         shape: 'box',
         counter: 0,
-        counterTarget: 4,
+        counterTarget: this.props.targetClicks,
         boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
+        reticle: ""
         // wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
         // wordRotation: {'x':0, 'y':0, 'z':0}
     }
@@ -30,6 +37,13 @@ class Aframe extends Component {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
+
+    // createReticle = () => {
+        
+    //     this.setState({
+    //         reticle: {primitive: "reticle"}
+    //     })
+    // }
 
     counterIncrement = () => {
         this.setState({
@@ -148,7 +162,7 @@ class Aframe extends Component {
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
                             primitive="a-cursor" 
-                            geometry={{primitive:'triangle', vertexA: '0 0.05 0', vertexB: '-0.05 -0.05 0', vertexC: '0.05 -0.05 0'}}
+                            geometry={this.state.reticle}
                             animation__click={{
                                 property: 'scale', 
                                 restartEvents: "click",
