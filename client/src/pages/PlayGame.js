@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
-import Aframe from './Aframe.js'
+import Aframe from './Aframe.js';
+import Wrapper from '../components/Wrapper';
+import Clue from '../components/Clue'
 
 class PlayGame extends Component {
     state = {
@@ -135,7 +137,15 @@ class PlayGame extends Component {
                 <p>{this.state.turn}</p>
 
                 <button onClick={this.same}>Make the same</button>
+                <Wrapper>
+                    <Clue 
+                        number={this.state.turn}
+                        hint={this.state.destHint}
+                        same={this.same}
+                    />
+                </Wrapper>
             </div>
+            
         )        
     }
 }
