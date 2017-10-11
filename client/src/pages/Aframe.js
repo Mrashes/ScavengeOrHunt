@@ -80,23 +80,7 @@ class Aframe extends Component {
         this.setState({
             boxPosition: boxListMinusCurr[index]
         });
-        // this.moveWords(index)
     }
-
-    // moveWords = (index) => {
-    //     const wordPosList = [{x: 0, y: 1.5, z: -1}, {x: -1, y: 1.5, z: 0}, {x: 0, y: 1.5, z: 1}, {x: 1, y: 1.5, z: 0}]
-    //     this.setState({
-    //         wordPosition: wordPosList[index]
-    //     });
-    //     this.rotateWords(index)
-    // }
-
-    // rotateWords = (index) => {
-    //     const wordRotList = [{x: 0, y: 0, z: 0}, {x: 0, y: 90, z: 0}, {x: 0, y: 180, z: 0}, {x: 0, y: 270, z: 0}]
-    //     this.setState({
-    //         wordRotation: wordRotList[index]
-    //     }); 
-    // }
 
     stopIt = () => {
         // Show Win screen
