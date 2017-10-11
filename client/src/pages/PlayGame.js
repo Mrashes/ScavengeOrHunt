@@ -1,24 +1,77 @@
 import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import Aframe from './Aframe.js'
+import API from '../utils/API.js'
+
+import axios from 'axios'
 
 class PlayGame extends Component {
     state = {
         currLat: 0,
         currLon: 0,
-        destArray: [
-            [41.896763, -87.618765], 
-            [41.897219, -87.621640], 
-            [41.897165, -87.624567], 
-            [41.894346, -87.626708], 
-            [41.891395, -87.623934], 
-            [41.890068, -87.623594]],
+        locations: {},
         destLat: 0,
         destLon: 0,
         destHint: "",
-        turn: 0,
+        destClick: 0,
+        turn: 1,
         redirect: false,
-        hint: ['School', 'Modern Art', 'Water Tower', 'Driehaus', 'InterContinental', 'Pioneer Court']
+    }
+
+    flatdata = {
+        "_id": "59dd50b1a0ed6b09cc538f8d",
+        "gameid": "MaxTest",
+        "__v": 0,
+        "locations": [
+            {
+            "locationNum": 1,
+            "clue": "School",
+            "latitude": "41.896763",
+            "longitude": "-87.618765",
+            "_id": "59dd50b1a0ed6b09cc538f93",
+            "hitcounter": 3
+            },
+            {
+            "locationNum": 2,
+            "clue": "Modern Art",
+            "latitude": "41.897219",
+            "longitude": "-87.621640",
+            "_id": "59dd50b1a0ed6b09cc538f92",
+            "hitcounter": 3
+            },
+            {
+            "locationNum": 3,
+            "clue": "Water Tower",
+            "latitude": "41.897165",
+            "longitude": "-87.624567",
+            "_id": "59dd50b1a0ed6b09cc538f91",
+            "hitcounter": 2
+            },
+            {
+            "locationNum": 4,
+            "clue": "Driehaus",
+            "latitude": "41.894346",
+            "longitude": "-87.626708",
+            "_id": "59dd50b1a0ed6b09cc538f90",
+            "hitcounter": 0
+            },
+            {
+            "locationNum": 5,
+            "clue": "InterContinental",
+            "latitude": "41.891395",
+            "longitude": "-87.623934",
+            "_id": "59dd50b1a0ed6b09cc538f8f",
+            "hitcounter": 3
+            },
+            {
+            "locationNum": 6,
+            "clue": "Pioneer court",
+            "latitude": "41.890068",
+            "longitude": "-87.623594",
+            "_id": "59dd50b1a0ed6b09cc538f8e",
+            "hitcounter": 4
+            }
+        ]
     }
 
     componentDidMount() {
@@ -35,7 +88,7 @@ class PlayGame extends Component {
             this.setState({
                 turn: this.state.turn+1,
             })
-            if (this.state.turn >= this.state.destArray.length-1){
+            if (this.state.turn >= this.state.locations.length){
                 console.log("End game")
             }
             else {
@@ -82,15 +135,33 @@ class PlayGame extends Component {
 
     getGameInfo = () => {
         //Ajax for Destination data
+        API.getGame("MaxTest").then(res => {
+            this.setState({
+                locations: res.data[0].locations
+            })
+            // console.log(this.state.locations)
+            this.getDestinationLocation()
+        })
+        // axios.get("/api/game/").then(res => {
+        //     this.setState({
+        //         locations: this.flatdata.locations
+        //     })
+        //     console.log(this.state.locations)
+        //     this.getDestinationLocation()
+        // })
         //for now
-        this.getDestinationLocation()
     }
 
     getDestinationLocation = () => {
+        const lat = this.state.locations[this.state.turn-1].latitude
+        const lon = this.state.locations[this.state.turn-1].longitude
+        const destlat = Math.round(10000*lat)/10000;
+        const destlon = Math.round(10000*lon)/10000;
         this.setState({
-            destLat: this.state.destArray[this.state.turn][0],
-            destLon: this.state.destArray[this.state.turn][1],
-            destHint: this.state.hint[this.state.turn]
+            destLat: destlat,
+            destLon: destlon,
+            destHint: this.state.locations[this.state.turn].clue,
+            destClick: this.state.locations[this.state.turn].hitcounter
         });
     }
 
@@ -116,8 +187,10 @@ class PlayGame extends Component {
 
     render() {
         if (this.state.redirect) {
-            // return (<Redirect push to="/aframe" />)
-            return (<Aframe destination={this.getDestinationLocation} redirect={this.handleRedirect}/>)
+            return (<Aframe 
+                        destination={this.getDestinationLocation} 
+                        redirect={this.handleRedirect}
+                        targetClicks={this.state.destClick}/>)
         }
         return(
             <div>
