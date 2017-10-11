@@ -7,9 +7,6 @@ import {Entity, Scene} from 'aframe-react';
 
 // import { Redirect } from "react-router-dom";
 
-
-
-
 //https://github.com/ngokevin/aframe-react
 
 //note localtunnel.me -- use for phone testing

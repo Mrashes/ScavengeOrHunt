@@ -3,10 +3,16 @@ import React, { Component } from 'react';
 import Aframe from './Aframe.js'
 import API from '../utils/API.js'
 
-import axios from 'axios'
+
+//TODO Aframe animations
+
+//Amanda passed data
+//this.props.params.username
+//this.props.params.gameid
 
 class PlayGame extends Component {
     state = {
+        startTime: 0,
         currLat: 0,
         currLon: 0,
         locations: {},
@@ -16,12 +22,11 @@ class PlayGame extends Component {
         destClick: 0,
         turn: 1,
         redirect: false,
+        endRedirect: false
     }
 
     flatdata = {
-        "_id": "59dd50b1a0ed6b09cc538f8d",
         "gameid": "MaxTest",
-        "__v": 0,
         "locations": [
             {
             "locationNum": 1,
@@ -79,34 +84,36 @@ class PlayGame extends Component {
         this.getGameInfo();
     }
 
-    compareLocations = () => {
-        // console.log('it compared')
 
-        //if location comparison correct then display the aframe environment
-        if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
-            // console.log('link to aframe')
-            this.setState({
-                turn: this.state.turn+1,
-            })
-            if (this.state.turn >= this.state.locations.length){
-                console.log("End game")
-            }
-            else {
-                this.setState({
-                    redirect: true
-                })
-            }
-            // console.log(this.state.turn)
-        }
-        else {
-            //Keep going
-        }
+    //REDIRECT FUNCTIONS
+    
+    same = () => {
+        this.setState({
+            redirect: true,
+            turn: this.state.turn+1,
+        })
     }
 
     handleRedirect = () => {
         this.setState({
             redirect: false
         })
+    }
+
+    //LOCATION based functions
+
+    compareLocations = () => {
+        //if location comparison correct then display the aframe environment
+        if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
+            // console.log('link to aframe')
+            this.setState({
+                turn: this.state.turn+1,
+                redirect: true
+            })
+        }
+        else {
+            //Keep going
+        }
     }
 
     setCurrLatLon = (lat, lon) =>{
@@ -123,48 +130,43 @@ class PlayGame extends Component {
         )
     }
 
-    same = () => {
-        var currLon = this.state.currLon
-        var currLat = this.state.currLat
-        this.setState({
-            destLat: currLat,
-            destLon: currLon
-        });
-        this.compareLocations()
-    }
-
-    getGameInfo = () => {
-        //Ajax for Destination data
+    //AJAX for game data
+    getGameInfo = (gameid) => {
+        //use gameid instead of  "MaxTest"
         API.getGame("MaxTest").then(res => {
             this.setState({
                 locations: res.data[0].locations
             })
             // console.log(this.state.locations)
-            this.getDestinationLocation()
+            this.getDestinationLocation();
+            this.setStartTime();
         })
-        // axios.get("/api/game/").then(res => {
-        //     this.setState({
-        //         locations: this.flatdata.locations
-        //     })
-        //     console.log(this.state.locations)
-        //     this.getDestinationLocation()
-        // })
-        //for now
     }
 
+    //This parses the locations data to return what the next destination is
     getDestinationLocation = () => {
-        const lat = this.state.locations[this.state.turn-1].latitude
-        const lon = this.state.locations[this.state.turn-1].longitude
-        const destlat = Math.round(10000*lat)/10000;
-        const destlon = Math.round(10000*lon)/10000;
-        this.setState({
-            destLat: destlat,
-            destLon: destlon,
-            destHint: this.state.locations[this.state.turn].clue,
-            destClick: this.state.locations[this.state.turn].hitcounter
-        });
+        if (this.state.turn >= this.state.locations.length){
+            this.timeCompare()
+        }
+        else {
+            const turn = this.state.turn-1
+    
+            const lat = this.state.locations[turn].latitude
+            const lon = this.state.locations[turn].longitude
+    
+            const destlat = Math.round(10000*lat)/10000;
+            const destlon = Math.round(10000*lon)/10000;
+    
+            this.setState({
+                destLat: destlat,
+                destLon: destlon,
+                destHint: this.state.locations[turn].clue,
+                destClick: this.state.locations[turn].hitcounter
+            });
+        }
     }
 
+    //sets up a watch for the position
     getCurrentLocation = () => {
         function geo_success(position) {
             this.setCurrLatLon(position.coords.latitude, position.coords.longitude)
@@ -182,9 +184,32 @@ class PlayGame extends Component {
             timeout           : Infinity
         };
         
+        //binds this so I can use another function
         navigator.geolocation.watchPosition(geo_success.bind(this), geo_error, geo_options);
     }
 
+
+    //TIME functions
+    setStartTime = () => {
+        const startTime = new Date();
+        //getTime finds milliseconds
+        this.setState({
+            startTime: startTime.getTime()
+        })
+    }
+
+    timeCompare = () => {
+        const endTime = new Date();
+        const timeDiff = endTime - this.state.startTime
+        const score = new Date(timeDiff)
+        this.setState({
+            time: score.getUTCHours() + ':' + score.getUTCMinutes() + ':' + score.getUTCSeconds(),
+            endRedirect: true
+        })
+    }
+
+
+    //RENDER functions
     render() {
         if (this.state.redirect) {
             return (<Aframe 
@@ -192,11 +217,20 @@ class PlayGame extends Component {
                         redirect={this.handleRedirect}
                         targetClicks={this.state.destClick}/>)
         }
+        else if (this.state.endRedirect){
+            return (
+                <div>
+                    <p>You did it!!!  Congrats!!!!</p>
+                    <p>Your time was {this.state.time}</p>
+                </div>
+            )
+        }
         return(
             <div>
                 <p>Current Coords</p>
                 <p>{this.state.currLat}</p>
                 <p>{this.state.currLon}</p>
+
                 <p>Destination</p>
                 <p>{this.state.destLat}</p>
                 <p>{this.state.destLon}</p>
