@@ -3,6 +3,6 @@ import { Link } from "react-router-dom";
 import "./Form.css";
 
 export const FormBtn = props =>
-    <Link{...props} >
+    <Link {...props} >
         {props.children}
     </Link>;
