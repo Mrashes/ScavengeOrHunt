@@ -59,7 +59,7 @@ class Aframe extends Component {
     }
 
     changeShapeProperties = () => {
-        const shape = ['box','cone','cylinder','sphere','ring','torus'];
+        const shape = ['box','cone','cylinder','sphere', 'torus'];
         const color = ['red', 'orange', 'yellow', 'green', 'blue'];
         const randomShape = this.getRandomInt(0, shape.length-1);
         const randomColor = this.getRandomInt(0, color.length-1);
@@ -111,10 +111,6 @@ class Aframe extends Component {
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
-                    
-                    {/* <Entity primitive="a-sky" transparent="true"/> */}
-                    {/* <Entity primitive="a-plane" transparent="true"/> */}
-
                     <Entity id="box"
                         geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}

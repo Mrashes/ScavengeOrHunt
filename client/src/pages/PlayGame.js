@@ -5,6 +5,9 @@ import API from '../utils/API.js'
 
 
 //TODO Aframe animations
+//TODO play sound when you reached the area
+//TODO make range of degrees it can be
+//TODO Only spawn shapes to the side of you
 
 //Amanda passed data
 //this.props.params.username
