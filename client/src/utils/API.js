@@ -11,5 +11,17 @@ export default {
 
     getAllGames: () => {
         return axios.get("api/game/")
-    }
+    },
+
+    saveUserScore: (scoredata) => {
+        return axios.post("/api/users/", scoredata)
+    },   
+
+    getScoreByGameId: (gameid) => {
+        return axios.get("api/users/"+gameid)
+    },
+
+    getAllScores: () => {
+        return axios.get("/api/users/")
+    },
 }
