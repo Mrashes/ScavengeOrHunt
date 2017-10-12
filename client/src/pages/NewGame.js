@@ -1,18 +1,32 @@
 import React, {Component} from "react"
 import API from "../utils/API"
+import Button from "../components/Button"
+import {Input} from "../components/Form"
+import Wrapper from "../components/Wrapper"
+
+const GAMEIDERROR = "Game ID Exists or Blank, Please enter a valid Game ID"
+const BLANKFIELDERROR = "Fields cannot be blank, Please enter valid values"
 
 class NewGame extends Component {
     state = {
+        allgames: [],
+        errtextId: false,
+        errtextEmpty: false,
         game: {
                 gameid: "",
                 locations: [{
-                    locationNum: "",
                     clue: "",
                     latitude: "",
                     longitude: "",
                     hitcounter: (Math.floor(Math.random()*5))+1
                 }]
         },
+    }
+
+    componentWillMount = () => {
+        API.getAllGames()
+        .then(res => this.setState({allgames: res.data.map((game, i) => game.gameid)}))
+        .catch(err => console.log(err))
     }
 
     handleGameIdChange = event => {
@@ -35,32 +49,61 @@ class NewGame extends Component {
     }  
     
     handleAdd = event => {
+        console.log("gameids", this.state.allgames)
         event.preventDefault();
         let game = this.state.game
         let locations = this.state.game.locations
-        this.setState({game: {...game, 
-                                locations: locations.concat([{
-                                                            locationNum: "", 
-                                                            clue: "", 
-                                                            latitude: "", 
-                                                            longitude: "",
-                                                            hitcounter: (Math.floor(Math.random()*5))+1}])}, 
-        })
-
+        if(!this.isGameidExists() && !this.isEmpty()){
+            console.log("not empty")
+            this.setState({game: {...game, 
+                                    locations: locations.concat([{
+                                                                clue: "", 
+                                                                latitude: "", 
+                                                                longitude: "",
+                                                                hitcounter: (Math.floor(Math.random()*5))+1}])}, 
+            })
+        }
     }
 
     handleSubmit = event => {
         event.preventDefault()
-        API.saveGame(this.state.game)
-        .then(res => this.setState({game: {...this.state.game, gameid: "", 
-                                                locations: [{locationNum: "", clue: "", latitude: "", longitude: ""}]}}))
-        .catch(err => console.log(err))
+        if(!this.isGameidExists() && !this.isEmpty()){
+
+            API.saveGame(this.state.game)
+            .then(res => this.setState({game: {...this.state.game, gameid: "", 
+                                                    locations: [{clue: "", latitude: "", longitude: ""}]}}))
+            .catch(err => console.log(err))
+        }
+    }
+
+    isGameidExists = () =>{
+        const curgameid = this.state.game.gameid.trim();
+        let isGameid=false;
+        if(this.state.allgames.includes(curgameid) || curgameid===""){
+            isGameid=true;
+        }
+        this.setState({errtextId: isGameid})
+        return isGameid;
+    }
+
+    isEmpty = () => {
+        const curlocations = this.state.game.locations;
+        let isBlank = false;
+        curlocations.map((location, i) => {
+            if(location.clue==="" || location.latitude==="" || location.longitude===""){
+                isBlank=true;
+            }
+        })
+        this.setState({errtextEmpty: isBlank})
+        return isBlank;
     }
 
     render(){
         let game = this.state.game
         return(
-            <div>
+            <Wrapper>
+                <p>{this.state.errtextId ? GAMEIDERROR : ""}</p>
+                <p>{this.state.errtextEmpty ? BLANKFIELDERROR : ""}</p>
                 <form>
                     <label htmlFor="gameid">GameID</label>
                     <input 
@@ -72,14 +115,7 @@ class NewGame extends Component {
                     />                    
                     {game.locations.map((location, index) => (
                         <div key={index}>
-                            <label htmlFor="locationNum">LocationNumber</label>
-                            <input 
-                                type="number"
-                                value={location.locationNum}
-                                onChange={this.handleInputChange(index)}
-                                name="locationNum"
-                                placeholder="Enter the Location Number (required)"
-                            />
+                            <label htmlFor="locationNum">Location: {index+1}</label>
                             
                             <label htmlFor="clue">Clue</label> 
                             <input 
@@ -109,14 +145,14 @@ class NewGame extends Component {
                             />  
                         </div>
                     ))}                         
-                    <button onClick = {this.handleAdd}>
+                    <Button onClick = {this.handleAdd}>
                         Add Location
-                    </button>  
-                    <button onClick = {this.handleSubmit}>
+                    </Button>  
+                    <Button onClick = {this.handleSubmit}>
                         Submit
-                    </button>                                                        
+                    </Button>                                                        
                 </form>
-            </div>
+            </Wrapper>
         )
     }
 }
