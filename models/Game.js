@@ -26,10 +26,6 @@ const GameSchema = new Schema({
             required: true,
             default: 5
         },
-        locationNum:{
-            type: Number,
-            required: true,
-        }
     }]
 })
 

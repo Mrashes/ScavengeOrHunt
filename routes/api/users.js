@@ -7,7 +7,7 @@ router.route("/")
 
 
 router.route("/:id")
-.get(usersController.findById)
+.get(usersController.findScoresByGameId)
 .put(usersController.update)
 
 

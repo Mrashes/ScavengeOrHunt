@@ -13,9 +13,9 @@ module.exports = {
             .then(data => res.json(data))
             .catch(err => res.status(422).json(err))
     },
-    findById: function(req, res) {
+    findScoresByGameId: function(req, res) {
         db.User
-          .findById(req.params.id)
+          .find({gameid: req.params.id})
           .then(data => res.json(data))
           .catch(err => res.status(422).json(err));
     },
