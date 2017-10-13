@@ -11,6 +11,8 @@ import LocationSound from './audio/locationAlert.mp3'
     //On shoot
     //On enter
     //On move
+//TODO Buy domain
+//TODO Move aframe object down
 
 //Amanda passed data
 //this.props.location.state.username
