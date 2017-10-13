@@ -136,7 +136,7 @@ class Aframe extends Component {
                     <Entity id="box"
                         geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}
-                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', restartEvents: "click", to: '360 360 360'}}
+                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
                         position={this.state.boxPosition}
                         rotation={{x: 90, y: 90, z: 90}}
                         events={{click: this.counterIncrement}}>
@@ -161,14 +161,6 @@ class Aframe extends Component {
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
                             primitive="a-cursor" 
-                            geometry={this.state.reticle}
-                            animation__click={{
-                                property: 'scale', 
-                                restartEvents: "click",
-                                from: '0.1 0.1 0.1', 
-                                to: '1 1 1', 
-                                dur: 150
-                            }}
                         />
                     </Entity>
 

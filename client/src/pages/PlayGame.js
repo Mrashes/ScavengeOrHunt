@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-// import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import API from '../utils/API.js';
 import Aframe from './Aframe.js';
 import Wrapper from '../components/Wrapper';
 import Clue from '../components/Clue';
 import LocationSound from './audio/locationAlert.mp3'
 
-//TODO reticle disappering from time to time
+//TODO reticle disappering on first shot -- Was linked to animation so I removed the animation
 //TODO Aframe animations
     //On shoot
     //On enter
@@ -27,6 +27,7 @@ class PlayGame extends Component {
         destHint: "",
         destClick: 0,
         turn: 1,
+        leaderData: [],
         redirect: false,
         endRedirect: false
     }
@@ -39,6 +40,7 @@ class PlayGame extends Component {
 
     //REDIRECT FUNCTIONS
     
+    //Quick resolve for testing
     same = () => {
         this.setState({
             redirect: true,
@@ -46,6 +48,7 @@ class PlayGame extends Component {
         })
     }
 
+    //handles redirect from aframe to this
     handleRedirect = () => {
         this.setState({
             redirect: false
@@ -72,6 +75,7 @@ class PlayGame extends Component {
         }
     }
 
+    //Set current location based on data taken from the watch location function
     setCurrLatLon = (lat, lon) =>{
         return new Promise (
             (resolve, reject) => {
@@ -154,27 +158,45 @@ class PlayGame extends Component {
         })
     }
 
+    //This creates a new date based on the difference between the start and the end of their run
     timeCompare = () => {
         const endTime = new Date();
         const timeDiff = endTime - this.state.startTime
         const score = new Date(timeDiff)
-        this.setState({
-            time: score.getUTCHours() + ':' + score.getUTCMinutes() + ':' + score.getUTCSeconds(),
-            endRedirect: true
+        //This post returns the highscore data from your ID then redirects
+        this.postHighScore(score).then(res => {
+            this.setState({
+                leaderData: res,
+                endRedirect: true
+            })
         })
-        this.postHighScore(score)
     }
 
     //HIGHSCORE functions
+    //Post to database the score
     postHighScore = (score) => {
-        API.saveUserScore({
-        name: this.props.location.state.username,
-        hours: score.getUTCHours(),
-        minutes: score.getUTCMinutes(),
-        seconds: score.getUTCSeconds(),
-        gameid: this.props.location.state.gameId
-        }).then(res => console.log(res))
-        .catch(e => console.log(e))
+        return new Promise (
+            (resolve, reject) => {
+                API.saveUserScore({
+                name: this.props.location.state.username,
+                hours: score.getUTCHours(),
+                minutes: score.getUTCMinutes(),
+                seconds: score.getUTCSeconds(),
+                gameid: this.props.location.state.gameId
+                }).then(res => {
+                    console.log(res);
+                    API.getScoreByGameId(this.props.location.state.gameId)
+                    .then(res => resolve(res.data))
+                    .catch(e => console.log(e))
+                })
+                .catch(e => {
+                    console.log(e);
+                    API.getScoreByGameId(this.props.location.state.gameId)
+                    .then(res => resolve(res.data))
+                    .catch(e => console.log(e))
+                })
+            }
+        )
     } 
 
 
@@ -188,10 +210,15 @@ class PlayGame extends Component {
         }
         else if (this.state.endRedirect){
             return (
-                <div>
-                    <p>You did it!!!  Congrats!!!!</p>
-                    <p>Your time was {this.state.time}</p>
-                </div>
+                <Redirect to={{
+                    pathname: '/endgame',
+                    state: { data: this.state.leaderData }
+                  }}
+                />
+                // <div>
+                //     <p>You did it!!!  Congrats!!!!</p>
+                //     <p>Your time was {this.state.time}</p>
+                // </div>
             )
         }
         return(
@@ -204,13 +231,6 @@ class PlayGame extends Component {
                 <p>{this.state.destLat}</p>
                 <p>{this.state.destLon}</p>
 
-                <p>Hint</p>
-                <p>{this.state.destHint}</p>
-
-                <p>Turn</p>
-                <p>{this.state.turn}</p>
-
-                <button onClick={this.same}>Make the same</button>
                 <Wrapper>
                     <Clue 
                         number={this.state.turn}
