@@ -7,13 +7,12 @@ import Clue from '../components/Clue';
 
 //TODO play sound when you reached the area - 1
 //TODO make range of degrees it can be - 2
-//TODO Only spawn shapes to the side of you - 3
 //TODO Play sound on "click" of object - 4
 //TODO Aframe animations - 5
 
 //Amanda passed data
-//this.props.params.username
-//this.props.params.gameid
+//this.props.location.state.username
+//this.props.location.state.gameId
 
 class PlayGame extends Component {
     state = {
@@ -32,7 +31,7 @@ class PlayGame extends Component {
 
     componentDidMount() {
         this.getCurrentLocation();
-        this.getGameInfo();
+        this.getGameInfo(this.props.location.state.gameId);
     }
 
 
@@ -95,7 +94,7 @@ class PlayGame extends Component {
     //AJAX for game data
     getGameInfo = (gameid) => {
         //use gameid instead of  "MaxTest"
-        API.getGame("MaxTest").then(res => {
+        API.getGame(gameid).then(res => {
             this.setState({
                 locations: res.data[0].locations
             })

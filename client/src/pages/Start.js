@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Input, FormBtn } from "../components/Form";
+import { Redirect } from "react-router-dom";
 import Header from "../components/Header";
 import Wrapper from "../components/Wrapper";
 import "./Start.css";
@@ -7,7 +8,8 @@ import "./Start.css";
 class Start extends Component {
   state = {
     username: "",
-    gameId: ""
+    gameId: "",
+    redirect: false
   }
 
   handleStartGame = username => {
@@ -26,6 +28,12 @@ class Start extends Component {
   };
 
   render() {
+    // if (this.state.redirect) {
+    //   return (<Redirect to={{
+    //     pathname: '/login',
+    //     state: { referrer: currentLocation }
+    //   }}/>)
+    // }
     return (
       <Wrapper>
         <Header>
@@ -51,8 +59,10 @@ class Start extends Component {
           <FormBtn
             className="btn btn-success"
             role="button"
-            to="/game"
-            params={{username: this.state.username, gameId: this.state.gameId}}
+            to={{
+              pathname: '/game',
+              state: {username: this.state.username, gameId: this.state.gameId}
+            }}
             disabled={!(this.state.username)}
           >
             Start Hunt
