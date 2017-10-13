@@ -4,11 +4,13 @@ import API from '../utils/API.js';
 import Aframe from './Aframe.js';
 import Wrapper from '../components/Wrapper';
 import Clue from '../components/Clue';
+import LocationSound from './audio/locationAlert.mp3'
 
-//TODO make range of degrees it can be - 2
-//TODO play sound when you reached the area - 1
-//TODO Play sound on "click" of object - 4
-//TODO Aframe animations - 5
+//TODO reticle disappering from time to time
+//TODO Aframe animations
+    //On shoot
+    //On enter
+    //On move
 
 //Amanda passed data
 //this.props.location.state.username
@@ -37,16 +39,11 @@ class PlayGame extends Component {
 
     //REDIRECT FUNCTIONS
     
-    // same = () => {
-    //     this.setState({
-    //         redirect: true,
-    //         turn: this.state.turn+1,
-    //     })
-    // }
-
     same = () => {
-        var audio = this.refs.audio
-        audio.play();
+        this.setState({
+            redirect: true,
+            turn: this.state.turn+1,
+        })
     }
 
     handleRedirect = () => {
@@ -60,10 +57,9 @@ class PlayGame extends Component {
     compareLocations = () => {
         //if location comparison correct then display the aframe environment
         if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
-            // //chime to indicate you're there
-            // var audio = new Audio('./audio/locationAlert.mp3');
-            // audio.play();
-            // console.log(audio)
+            //chime to indicate you're there
+            var audio = new Audio(LocationSound)
+            audio.play();
 
             //direct to aframe
             this.setState({
@@ -166,7 +162,20 @@ class PlayGame extends Component {
             time: score.getUTCHours() + ':' + score.getUTCMinutes() + ':' + score.getUTCSeconds(),
             endRedirect: true
         })
+        this.postHighScore(score)
     }
+
+    //HIGHSCORE functions
+    postHighScore = (score) => {
+        API.saveUserScore({
+        name: this.props.location.state.username,
+        hours: score.getUTCHours(),
+        minutes: score.getUTCMinutes(),
+        seconds: score.getUTCSeconds(),
+        gameid: this.props.location.state.gameId
+        }).then(res => console.log(res))
+        .catch(e => console.log(e))
+    } 
 
 
     //RENDER functions
@@ -200,8 +209,6 @@ class PlayGame extends Component {
 
                 <p>Turn</p>
                 <p>{this.state.turn}</p>
-
-                <audio ref="audio" src="./audio/locationAlert.mp3" preload></audio>
 
                 <button onClick={this.same}>Make the same</button>
                 <Wrapper>

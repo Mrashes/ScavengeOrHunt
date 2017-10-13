@@ -5,11 +5,10 @@ import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
 
-// import { Redirect } from "react-router-dom";
+
+import ShootSound from './audio/shootSound.mp3'
 
 //https://github.com/ngokevin/aframe-react
-
-//note localtunnel.me -- use for phone testing
 
 class Aframe extends Component {
 
@@ -19,9 +18,7 @@ class Aframe extends Component {
         counter: 0,
         counterTarget: this.props.targetClicks,
         boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
-        reticle: ""
-        // wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
-        // wordRotation: {'x':0, 'y':0, 'z':0}
+        // reticle: ""
     }
 
     componentDidMount() {
@@ -41,6 +38,10 @@ class Aframe extends Component {
             counter: this.state.counter + 1
         });
         const counter = this.state.counter
+
+        var audio = new Audio(ShootSound)
+        audio.play();
+
         //move to another side
         this.moveBox()
         if (counter === this.state.counterTarget) {
@@ -172,6 +173,8 @@ class Aframe extends Component {
                     </Entity>
 
                 </Scene>
+
+                <audio ref="shoot" src={ShootSound} preload></audio>
 
                 <p className="clicks">clicks: {this.state.counter}</p>
 

@@ -7,7 +7,17 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    score: {
+    hours: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    minutes: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    seconds: {
         type: Number,
         required: true,
         default: 0
