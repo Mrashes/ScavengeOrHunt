@@ -6,7 +6,6 @@ const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     score: {
         type: Number,
@@ -16,6 +15,10 @@ const UserSchema = new Schema({
     scoredate: {
         type: Date,
         default: Date.now
+    },
+    gameid: {
+        type: String,
+        required: true,
     }
 })
 
