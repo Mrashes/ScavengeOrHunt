@@ -11,7 +11,10 @@ module.exports = {
         db.User
             .create(req.body)
             .then(data => res.json(data))
-            .catch(err => res.status(422).json(err))
+            .catch(err => {
+                res.status(422).json(err)
+                console.log(err)
+            })
     },
     findScoresByGameId: function(req, res) {
         db.User

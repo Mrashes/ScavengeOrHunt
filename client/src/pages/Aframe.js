@@ -5,11 +5,10 @@ import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
 
-// import { Redirect } from "react-router-dom";
+
+import ShootSound from './audio/shootSound.mp3'
 
 //https://github.com/ngokevin/aframe-react
-
-//note localtunnel.me -- use for phone testing
 
 class Aframe extends Component {
 
@@ -19,9 +18,7 @@ class Aframe extends Component {
         counter: 0,
         counterTarget: this.props.targetClicks,
         boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
-        reticle: ""
-        // wordPosition: {'x': 0, 'y': 1.5, 'z': -1},
-        // wordRotation: {'x':0, 'y':0, 'z':0}
+        // reticle: ""
     }
 
     componentDidMount() {
@@ -41,6 +38,10 @@ class Aframe extends Component {
             counter: this.state.counter + 1
         });
         const counter = this.state.counter
+
+        var audio = new Audio(ShootSound)
+        audio.play();
+
         //move to another side
         this.moveBox()
         if (counter === this.state.counterTarget) {
@@ -135,7 +136,7 @@ class Aframe extends Component {
                     <Entity id="box"
                         geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}
-                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', restartEvents: "click", to: '360 360 360'}}
+                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
                         position={this.state.boxPosition}
                         rotation={{x: 90, y: 90, z: 90}}
                         events={{click: this.counterIncrement}}>
@@ -160,18 +161,12 @@ class Aframe extends Component {
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
                             primitive="a-cursor" 
-                            geometry={this.state.reticle}
-                            animation__click={{
-                                property: 'scale', 
-                                restartEvents: "click",
-                                from: '0.1 0.1 0.1', 
-                                to: '1 1 1', 
-                                dur: 150
-                            }}
                         />
                     </Entity>
 
                 </Scene>
+
+                <audio ref="shoot" src={ShootSound} preload></audio>
 
                 <p className="clicks">clicks: {this.state.counter}</p>
 
