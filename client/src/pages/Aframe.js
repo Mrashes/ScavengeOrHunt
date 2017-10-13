@@ -35,13 +35,7 @@ class Aframe extends Component {
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    // createReticle = () => {
-        
-    //     this.setState({
-    //         reticle: {primitive: "reticle"}
-    //     })
-    // }
-
+    //increment the counter at the top and move the box
     counterIncrement = () => {
         this.setState({
             counter: this.state.counter + 1
@@ -53,13 +47,11 @@ class Aframe extends Component {
             //reset counter to 0
             this.stopIt()
         }
-        // if (this.state.counter >= 1) {
-        //     this.stopIt()
-        // }
     }
 
+    //Randomize how the shape looks
     changeShapeProperties = () => {
-        const shape = ['box','cone','cylinder','sphere','ring','torus'];
+        const shape = ['box','cone','cylinder','sphere', 'torus'];
         const color = ['red', 'orange', 'yellow', 'green', 'blue'];
         const randomShape = this.getRandomInt(0, shape.length-1);
         const randomColor = this.getRandomInt(0, color.length-1);
@@ -69,22 +61,51 @@ class Aframe extends Component {
         })
     }
 
+    //this bascially handles the shit
+    boxEdgeCase = (boxList, boxPos) =>  {
+        //if id is zero find the biggest id
+        if (boxPos["id"] === 0) {
+            return boxList.length-1
+        }
+        //if id is biggest return zero
+        else if (boxPos["id"] === boxList.length-1) {
+            return 0
+        }
+        //if zero return the second biggest number
+        else if (boxPos["id"] === 1) {
+            return boxList.length-2
+        }
+        else {
+            return boxPos['id'] - 2
+        }
+    }
+    
+    //This sucks
     moveBox = () => {
+        //list of all locations of box
         const boxPosList = [{'id':0, 'x': 0, 'y': 3, 'z': -3}, {'id':1, 'x': -3, 'y': 3, 'z': 0}, {'id':2, 'x': 0, 'y': 3, 'z': 3}, {'id':3, 'x': 3, 'y': 3, 'z': 0}]
+        //current state of box
         const boxPosition = this.state.boxPosition
-        const boxListMinusCurr = boxPosList.filter(object => object["id"] !== boxPosition["id"])
-        const index = this.getRandomInt(0, boxListMinusCurr.length)
+        //filter out current location
+        const newBox = boxPosList.filter(object => object["id"] !== boxPosition["id"])
+        //find what object is the edgecase
+        const forbidden = this.boxEdgeCase(boxPosList, boxPosition)
+        //filter out the edge case
+        const nextBox = newBox.filter(object => object["id"] !== forbidden) 
+        // find the index
+        const index = this.getRandomInt(0, nextBox.length)
         this.setState({
-            boxPosition: boxListMinusCurr[index]
+            boxPosition: nextBox[index]
         });
     }
 
+    //this finishes the aframe game
     stopIt = () => {
-        // Show Win screen
         this.props.destination()
         this.props.redirect()
     }
 
+    //This builds the camera in the background
     makeCamera = () => {
         // facingMode environment means it'll prefer the back camera if available
         const constraints = { video: { facingMode:{exact:"environment"} } };
@@ -111,10 +132,6 @@ class Aframe extends Component {
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
-                    
-                    {/* <Entity primitive="a-sky" transparent="true"/> */}
-                    {/* <Entity primitive="a-plane" transparent="true"/> */}
-
                     <Entity id="box"
                         geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}

@@ -5,18 +5,21 @@ import Aframe from './Aframe.js';
 import Wrapper from '../components/Wrapper';
 import Clue from '../components/Clue';
 
-//TODO Aframe animations
+//TODO play sound when you reached the area - 1
+//TODO make range of degrees it can be - 2
+//TODO Play sound on "click" of object - 4
+//TODO Aframe animations - 5
 
 //Amanda passed data
-//this.props.params.username
-//this.props.params.gameid
+//this.props.location.state.username
+//this.props.location.state.gameId
 
 class PlayGame extends Component {
     state = {
         startTime: 0,
         currLat: 0,
         currLon: 0,
-        locations: {},
+        locations: [],
         destLat: 0,
         destLon: 0,
         destHint: "",
@@ -26,63 +29,9 @@ class PlayGame extends Component {
         endRedirect: false
     }
 
-    flatdata = {
-        "gameid": "MaxTest",
-        "locations": [
-            {
-            "locationNum": 1,
-            "clue": "School",
-            "latitude": "41.896763",
-            "longitude": "-87.618765",
-            "_id": "59dd50b1a0ed6b09cc538f93",
-            "hitcounter": 3
-            },
-            {
-            "locationNum": 2,
-            "clue": "Modern Art",
-            "latitude": "41.897219",
-            "longitude": "-87.621640",
-            "_id": "59dd50b1a0ed6b09cc538f92",
-            "hitcounter": 3
-            },
-            {
-            "locationNum": 3,
-            "clue": "Water Tower",
-            "latitude": "41.897165",
-            "longitude": "-87.624567",
-            "_id": "59dd50b1a0ed6b09cc538f91",
-            "hitcounter": 2
-            },
-            {
-            "locationNum": 4,
-            "clue": "Driehaus",
-            "latitude": "41.894346",
-            "longitude": "-87.626708",
-            "_id": "59dd50b1a0ed6b09cc538f90",
-            "hitcounter": 0
-            },
-            {
-            "locationNum": 5,
-            "clue": "InterContinental",
-            "latitude": "41.891395",
-            "longitude": "-87.623934",
-            "_id": "59dd50b1a0ed6b09cc538f8f",
-            "hitcounter": 3
-            },
-            {
-            "locationNum": 6,
-            "clue": "Pioneer court",
-            "latitude": "41.890068",
-            "longitude": "-87.623594",
-            "_id": "59dd50b1a0ed6b09cc538f8e",
-            "hitcounter": 4
-            }
-        ]
-    }
-
     componentDidMount() {
         this.getCurrentLocation();
-        this.getGameInfo();
+        this.getGameInfo(this.props.location.state.gameId);
     }
 
 
@@ -95,6 +44,12 @@ class PlayGame extends Component {
         })
     }
 
+    // same = () => {
+    //     var audio = new Audio('./audio/locationAlert.mp3');
+    //     console.log(audio)
+    //     audio.play();
+    // }
+
     handleRedirect = () => {
         this.setState({
             redirect: false
@@ -106,7 +61,12 @@ class PlayGame extends Component {
     compareLocations = () => {
         //if location comparison correct then display the aframe environment
         if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
-            // console.log('link to aframe')
+            //chime to indicate you're there
+            var audio = new Audio('./audio/locationAlert.mp3');
+            audio.play();
+            console.log(audio)
+
+            //direct to aframe
             this.setState({
                 turn: this.state.turn+1,
                 redirect: true
@@ -134,7 +94,7 @@ class PlayGame extends Component {
     //AJAX for game data
     getGameInfo = (gameid) => {
         //use gameid instead of  "MaxTest"
-        API.getGame("MaxTest").then(res => {
+        API.getGame(gameid).then(res => {
             this.setState({
                 locations: res.data[0].locations
             })
