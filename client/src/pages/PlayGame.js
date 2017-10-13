@@ -5,8 +5,8 @@ import Aframe from './Aframe.js';
 import Wrapper from '../components/Wrapper';
 import Clue from '../components/Clue';
 
-//TODO play sound when you reached the area - 1
 //TODO make range of degrees it can be - 2
+//TODO play sound when you reached the area - 1
 //TODO Play sound on "click" of object - 4
 //TODO Aframe animations - 5
 
@@ -37,18 +37,17 @@ class PlayGame extends Component {
 
     //REDIRECT FUNCTIONS
     
-    same = () => {
-        this.setState({
-            redirect: true,
-            turn: this.state.turn+1,
-        })
-    }
-
     // same = () => {
-    //     var audio = new Audio('./audio/locationAlert.mp3');
-    //     console.log(audio)
-    //     audio.play();
+    //     this.setState({
+    //         redirect: true,
+    //         turn: this.state.turn+1,
+    //     })
     // }
+
+    same = () => {
+        var audio = this.refs.audio
+        audio.play();
+    }
 
     handleRedirect = () => {
         this.setState({
@@ -61,10 +60,10 @@ class PlayGame extends Component {
     compareLocations = () => {
         //if location comparison correct then display the aframe environment
         if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
-            //chime to indicate you're there
-            var audio = new Audio('./audio/locationAlert.mp3');
-            audio.play();
-            console.log(audio)
+            // //chime to indicate you're there
+            // var audio = new Audio('./audio/locationAlert.mp3');
+            // audio.play();
+            // console.log(audio)
 
             //direct to aframe
             this.setState({
@@ -80,8 +79,8 @@ class PlayGame extends Component {
     setCurrLatLon = (lat, lon) =>{
         return new Promise (
             (resolve, reject) => {
-                const currlat = Math.round(10000*lat)/10000;
-                const currlon = Math.round(10000*lon)/10000;
+                const currlat = Math.round(1000*lat)/1000;
+                const currlon = Math.round(1000*lon)/1000;
                 this.setState({
                     currLat: currlat,
                     currLon: currlon
@@ -115,8 +114,8 @@ class PlayGame extends Component {
             const lat = this.state.locations[turn].latitude
             const lon = this.state.locations[turn].longitude
     
-            const destlat = Math.round(10000*lat)/10000;
-            const destlon = Math.round(10000*lon)/10000;
+            const destlat = Math.round(1000*lat)/1000;
+            const destlon = Math.round(1000*lon)/1000;
     
             this.setState({
                 destLat: destlat,
@@ -201,6 +200,8 @@ class PlayGame extends Component {
 
                 <p>Turn</p>
                 <p>{this.state.turn}</p>
+
+                <audio ref="audio" src="./audio/locationAlert.mp3" preload></audio>
 
                 <button onClick={this.same}>Make the same</button>
                 <Wrapper>
