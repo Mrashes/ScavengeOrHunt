@@ -13,7 +13,10 @@ const Story = props =>
             <p>
                 Use your shape sensing scope to defeat the emeny (line up the scope and click). 
                 But beware, it may take more than one shot, and they jump around when injured!
-                Upon success, you will be given a clue for your next destination. Good luck hunter!
+                Upon success, you will be given a clue for your next destination. 
+            </p>
+            <p>
+                Good Luck Hunting!
             </p>
         </div>
         <Button onClick={props.done}> Done </Button>
