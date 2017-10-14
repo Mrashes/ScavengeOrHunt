@@ -7,15 +7,15 @@ import Clue from '../../components/Clue'
 import Story from '../../components/Story';
 // import LocationSound from '../audio/locationAlert.mp3'
 
-//TODO reticle disappering on first shot -- Was linked to animation so I removed the animation
 //TODO Aframe animations
     //On shoot
     //On enter
     //On move
-//TODO Buy domain
-//TODO Move aframe box down
-//TODO Audio delay
+//TODO deal domain
 //TODO custom Models
+//TODO make new Chicago one for class
+
+//PreLoad.js to cache 
 
 //Amanda passed data
 //this.props.location.state.username
