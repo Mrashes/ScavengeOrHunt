@@ -1,6 +1,7 @@
 import React from "react";
 import "./Clue.css";
 import Button from "../Button";
+import Wrapper from "../Wrapper";
 
 const Clue = props => 
     <div className="panel panel-default">

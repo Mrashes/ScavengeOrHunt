@@ -125,8 +125,8 @@ class PlayGame extends Component {
             const lat = this.state.locations[turn].latitude
             const lon = this.state.locations[turn].longitude
     
-            const destlat = Math.round(1000*lat)/1000;
-            const destlon = Math.round(1000*lon)/1000;
+            const destlat = Math.round(10000*lat)/10000;
+            const destlon = Math.round(10000*lon)/10000;
     
             this.setState({
                 destLat: destlat,
@@ -237,13 +237,13 @@ class PlayGame extends Component {
         }
         return(
             <div>
-                {/* <p>Current Coords</p>
+                <p>Current Coords</p>
                 <p>{this.state.currLat}</p>
                 <p>{this.state.currLon}</p>
 
                 <p>Destination</p>
                 <p>{this.state.destLat}</p>
-                <p>{this.state.destLon}</p> */}
+                <p>{this.state.destLon}</p> 
 
                 <Wrapper>
                     <Clue 

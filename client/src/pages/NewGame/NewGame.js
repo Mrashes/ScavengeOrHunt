@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom"
 import API from "../../utils/API"
 import Button from "../../components/Button"
 import Wrapper from "../../components/Wrapper"
-import {Input} from "../../components/Form"
+import {Input, FormBtn} from "../../components/Form"
 import Error from "../../components/Error"
 import "./NewGame.css";
 
@@ -195,7 +195,16 @@ class NewGame extends Component {
                     </Button>  
                     <Button onClick = {this.handleSubmit}>
                         Submit
-                    </Button>                                                        
+                    </Button>   
+                    <div>
+                        <FormBtn 
+                            className="btn btn-success"
+                            role="button"
+                            to="/"
+                        >
+                            Home
+                        </FormBtn>  
+                    </div>                                                 
                 </form>
             </Wrapper>
         )
