@@ -99,7 +99,7 @@ class Aframe extends Component {
 
     //this finishes the aframe game
     stopIt = () => {
-        this.props.destination()
+        // this.props.destination()
         this.props.redirect()
     }
 

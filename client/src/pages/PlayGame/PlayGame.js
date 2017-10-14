@@ -13,7 +13,7 @@ import LocationSound from '../audio/locationAlert.mp3'
     //On enter
     //On move
 //TODO Buy domain
-//TODO Move aframe object down
+//TODO Move aframe box down
 
 //Amanda passed data
 //this.props.location.state.username
@@ -78,6 +78,7 @@ class PlayGame extends Component {
                 turn: this.state.turn+1,
                 redirect: true
             })
+            this.getDestinationLocation()
         }
         else {
             //Keep going
@@ -231,10 +232,6 @@ class PlayGame extends Component {
                     state: { data: this.state.leaderData }
                   }}
                 />
-                // <div>
-                //     <p>You did it!!!  Congrats!!!!</p>
-                //     <p>Your time was {this.state.time}</p>
-                // </div>
             )
         }
         return(
