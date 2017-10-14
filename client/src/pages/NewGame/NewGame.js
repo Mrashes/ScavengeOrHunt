@@ -141,7 +141,19 @@ class NewGame extends Component {
                             onChange={this.handleGameIdChange}
                             name="gameid"
                             placeholder="Game ID (required)"
-                    />                    
+                    />
+
+                    <div>
+                        <label htmlFor="gameid"><h4 className="input-label">Plot</h4></label>
+                    </div>
+                    <input 
+                            className="gameId-input"
+                            type="text"
+                            value={game.plot}
+                            onChange={this.handleGameIdChange}
+                            name="plot"
+                            placeholder="Plot/Story (not required)"
+                    />                 
                     {game.locations.map((location, index) => (
                         <div key={index}>
                             <div>
