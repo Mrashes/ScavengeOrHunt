@@ -67,14 +67,14 @@ class NewGame extends Component {
         }
     }
 
-    // handleDelete = (id, event) => {
-    //     event.preventDefault()
-    //     console.log("delete clicked"+ id)
-    //     let game = this.state.game
-    //     let locations = this.state.game.locations
-    //     this.setState({game:{...game, 
-    //                             locations: locations.filter((l, index) => index!==id)}})
-    // }
+    handleDelete = (id) => event => {
+        event.preventDefault()
+        console.log("delete clicked"+ id)
+        let game = this.state.game
+        let locations = this.state.game.locations
+        this.setState({game:{...game, 
+                                locations: locations.filter((l, index) => index!==id)}})
+    }
 
     handleSubmit = event => {
         event.preventDefault()
@@ -161,7 +161,7 @@ class NewGame extends Component {
                                 name="longitude"
                                 placeholder="Enter the longitude for this location (required from 2nd location onwards)"
                             /> 
-                            {/* <Button key={index}>X</Button>   */}
+                            {(index>0) ? (<Button onClick={this.handleDelete(index)}>X</Button>) : ("") }
                         </div>
                     ))}                         
                     <Button onClick = {this.handleAdd}>
