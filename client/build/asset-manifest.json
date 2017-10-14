@@ -1,8 +1,8 @@
 {
   "main.css": "static/css/main.8cd978a7.css",
   "main.css.map": "static/css/main.8cd978a7.css.map",
-  "main.js": "static/js/main.e1882c45.js",
-  "main.js.map": "static/js/main.e1882c45.js.map",
-  "static/media/locationAlert.mp3": "static/media/locationAlert.a5ac25ec.mp3",
-  "static/media/shootSound.mp3": "static/media/shootSound.de8877a1.mp3"
+  "main.js": "static/js/main.92348e76.js",
+  "main.js.map": "static/js/main.92348e76.js.map",
+  "static\\media\\locationAlert.mp3": "static/media/locationAlert.a5ac25ec.mp3",
+  "static\\media\\shootSound.mp3": "static/media/shootSound.de8877a1.mp3"
 }
