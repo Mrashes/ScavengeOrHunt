@@ -19,9 +19,9 @@ render(){
     <Wrapper>
       <Header>
         <div>Scavenge</div>
-        <div> ~ </div>
+        <p> </p>
         <div>Or</div>
-        <div> ~ </div>
+        <p> </p>
         <div>Hunt</div>
       </Header>
       <form>
