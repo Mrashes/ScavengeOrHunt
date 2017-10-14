@@ -78,7 +78,6 @@ class PlayGame extends Component {
                 turn: this.state.turn+1,
                 redirect: true
             })
-            this.getDestinationLocation()
         }
         else {
             //Keep going
