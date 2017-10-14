@@ -13,37 +13,38 @@ const EndGame = props => {
         return `${month}/${day}/${year}`
     }
 
-    return ( <Wrapper>
-        <h1>Game Over!</h1>
-        <h2>LeaderBoard</h2>
-        <table className="table leaderboard">
-            <thead>
-                <tr>
-                    <th scope="row">#</th>
-                    <th>Username</th>
-                    <th>Time</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {props.location.state.data.map((user, index) => (
-                    <tr key={index}>
-                        <th scope="row">{index+1}</th>
-                        <td>{user.name}</td>
-                        <td>{user.hours}:{user.minutes}:{user.seconds}</td>
-                        <td>{formatDate(user.scoredate)}</td>
+    return ( 
+        <Wrapper>
+            <h1>Game Over!</h1>
+            <h2>LeaderBoard</h2>
+            <table className="table leaderboard">
+                <thead>
+                    <tr>
+                        <th scope="row">#</th>
+                        <th>Username</th>
+                        <th>Time</th>
+                        <th>Date</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-        <FormBtn 
-            className="btn btn-success"
-            role="button"
-            to="/"
-        >
-            Home
-        </FormBtn>
-    </Wrapper> )
+                </thead>
+                <tbody>
+                    {props.location.state.data.map((user, index) => (
+                        <tr key={index}>
+                            <th scope="row">{index+1}</th>
+                            <td>{user.name}</td>
+                            <td>{user.hours}:{user.minutes}:{user.seconds}</td>
+                            <td>{formatDate(user.scoredate)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <FormBtn 
+                className="btn btn-success"
+                role="button"
+                to="/"
+            >
+                Home
+            </FormBtn>
+        </Wrapper> )
 }
 
 export default EndGame;

@@ -124,8 +124,8 @@ class PlayGame extends Component {
             const lat = this.state.locations[turn].latitude
             const lon = this.state.locations[turn].longitude
     
-            const destlat = Math.round(10000*lat)/10000;
-            const destlon = Math.round(10000*lon)/10000;
+            const destlat = Math.round(1000*lat)/1000;
+            const destlon = Math.round(1000*lon)/1000;
     
             this.setState({
                 destLat: destlat,
