@@ -3,7 +3,8 @@ import { Redirect } from "react-router-dom";
 import API from '../../utils/API.js';
 import Aframe from '../Aframe';
 import Wrapper from '../../components/Wrapper';
-import Clue from '../../components/Clue';
+import Clue from '../../components/Clue'
+import Story from '../../components/Story';
 import LocationSound from '../audio/locationAlert.mp3'
 
 //TODO reticle disappering on first shot -- Was linked to animation so I removed the animation
@@ -31,7 +32,8 @@ class PlayGame extends Component {
         turn: 1,
         leaderData: [],
         redirect: false,
-        endRedirect: false
+        endRedirect: false,
+        new: true,
     }
 
     componentDidMount() {
@@ -47,6 +49,11 @@ class PlayGame extends Component {
         this.setState({
             redirect: true,
             turn: this.state.turn+1,
+        })
+    }
+    done = () => {
+        this.setState({
+            new: false
         })
     }
 
@@ -221,6 +228,13 @@ class PlayGame extends Component {
                 //     <p>You did it!!!  Congrats!!!!</p>
                 //     <p>Your time was {this.state.time}</p>
                 // </div>
+            )
+        }
+        else if(this.state.new) {
+            return (
+                <Story 
+                    done={this.done}
+                />
             )
         }
         return(
