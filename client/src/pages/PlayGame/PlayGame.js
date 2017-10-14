@@ -78,6 +78,7 @@ class PlayGame extends Component {
                 turn: this.state.turn+1,
                 redirect: true
             })
+            this.getDestinationLocation()
         }
         else {
             //Keep going
@@ -224,10 +225,6 @@ class PlayGame extends Component {
                     state: { data: this.state.leaderData }
                   }}
                 />
-                // <div>
-                //     <p>You did it!!!  Congrats!!!!</p>
-                //     <p>Your time was {this.state.time}</p>
-                // </div>
             )
         }
         else if(this.state.new) {
