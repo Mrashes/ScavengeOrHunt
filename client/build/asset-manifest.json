@@ -1,6 +1,15 @@
 {
+<<<<<<< HEAD
   "main.css": "static/css/main.af97df67.css",
   "main.css.map": "static/css/main.af97df67.css.map",
   "main.js": "static/js/main.dbc93f64.js",
   "main.js.map": "static/js/main.dbc93f64.js.map"
+=======
+  "main.css": "static/css/main.8645e8d6.css",
+  "main.css.map": "static/css/main.8645e8d6.css.map",
+  "main.js": "static/js/main.81a8989e.js",
+  "main.js.map": "static/js/main.81a8989e.js.map",
+  "static\\media\\locationAlert.mp3": "static/media/locationAlert.a5ac25ec.mp3",
+  "static\\media\\shootSound.mp3": "static/media/shootSound.de8877a1.mp3"
+>>>>>>> origin
 }

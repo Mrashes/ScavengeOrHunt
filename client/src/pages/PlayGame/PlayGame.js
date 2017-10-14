@@ -1,92 +1,48 @@
 import React, { Component } from 'react';
-import API from '../../utils/API.js';
-import Aframe from '../Aframe';
-import Wrapper from '../../components/Wrapper';
-import Clue from '../../components/Clue';
+import { Redirect } from "react-router-dom";
+import API from '../utils/API.js';
+import Aframe from './Aframe.js';
+import Wrapper from '../components/Wrapper';
+import Clue from '../components/Clue';
+import LocationSound from './audio/locationAlert.mp3'
 
+//TODO reticle disappering on first shot -- Was linked to animation so I removed the animation
 //TODO Aframe animations
+    //On shoot
+    //On enter
+    //On move
+//TODO Buy domain
+//TODO Move aframe object down
 
 //Amanda passed data
-//this.props.params.username
-//this.props.params.gameid
+//this.props.location.state.username
+//this.props.location.state.gameId
 
 class PlayGame extends Component {
     state = {
         startTime: 0,
         currLat: 0,
         currLon: 0,
-        locations: {},
+        locations: [],
         destLat: 0,
         destLon: 0,
         destHint: "",
         destClick: 0,
         turn: 1,
+        leaderData: [],
         redirect: false,
         endRedirect: false
     }
 
-    flatdata = {
-        "gameid": "MaxTest",
-        "locations": [
-            {
-            "locationNum": 1,
-            "clue": "School",
-            "latitude": "41.896763",
-            "longitude": "-87.618765",
-            "_id": "59dd50b1a0ed6b09cc538f93",
-            "hitcounter": 3
-            },
-            {
-            "locationNum": 2,
-            "clue": "Modern Art",
-            "latitude": "41.897219",
-            "longitude": "-87.621640",
-            "_id": "59dd50b1a0ed6b09cc538f92",
-            "hitcounter": 3
-            },
-            {
-            "locationNum": 3,
-            "clue": "Water Tower",
-            "latitude": "41.897165",
-            "longitude": "-87.624567",
-            "_id": "59dd50b1a0ed6b09cc538f91",
-            "hitcounter": 2
-            },
-            {
-            "locationNum": 4,
-            "clue": "Driehaus",
-            "latitude": "41.894346",
-            "longitude": "-87.626708",
-            "_id": "59dd50b1a0ed6b09cc538f90",
-            "hitcounter": 0
-            },
-            {
-            "locationNum": 5,
-            "clue": "InterContinental",
-            "latitude": "41.891395",
-            "longitude": "-87.623934",
-            "_id": "59dd50b1a0ed6b09cc538f8f",
-            "hitcounter": 3
-            },
-            {
-            "locationNum": 6,
-            "clue": "Pioneer court",
-            "latitude": "41.890068",
-            "longitude": "-87.623594",
-            "_id": "59dd50b1a0ed6b09cc538f8e",
-            "hitcounter": 4
-            }
-        ]
-    }
-
     componentDidMount() {
         this.getCurrentLocation();
-        this.getGameInfo();
+        this.getGameInfo(this.props.location.state.gameId);
     }
 
 
     //REDIRECT FUNCTIONS
     
+    //Quick resolve for testing
     same = () => {
         this.setState({
             redirect: true,
@@ -94,6 +50,7 @@ class PlayGame extends Component {
         })
     }
 
+    //handles redirect from aframe to this
     handleRedirect = () => {
         this.setState({
             redirect: false
@@ -105,7 +62,11 @@ class PlayGame extends Component {
     compareLocations = () => {
         //if location comparison correct then display the aframe environment
         if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
-            // console.log('link to aframe')
+            //chime to indicate you're there
+            var audio = new Audio(LocationSound)
+            audio.play();
+
+            //direct to aframe
             this.setState({
                 turn: this.state.turn+1,
                 redirect: true
@@ -116,11 +77,12 @@ class PlayGame extends Component {
         }
     }
 
+    //Set current location based on data taken from the watch location function
     setCurrLatLon = (lat, lon) =>{
         return new Promise (
             (resolve, reject) => {
-                const currlat = Math.round(10000*lat)/10000;
-                const currlon = Math.round(10000*lon)/10000;
+                const currlat = Math.round(1000*lat)/1000;
+                const currlon = Math.round(1000*lon)/1000;
                 this.setState({
                     currLat: currlat,
                     currLon: currlon
@@ -133,7 +95,7 @@ class PlayGame extends Component {
     //AJAX for game data
     getGameInfo = (gameid) => {
         //use gameid instead of  "MaxTest"
-        API.getGame("MaxTest").then(res => {
+        API.getGame(gameid).then(res => {
             this.setState({
                 locations: res.data[0].locations
             })
@@ -154,8 +116,8 @@ class PlayGame extends Component {
             const lat = this.state.locations[turn].latitude
             const lon = this.state.locations[turn].longitude
     
-            const destlat = Math.round(10000*lat)/10000;
-            const destlon = Math.round(10000*lon)/10000;
+            const destlat = Math.round(1000*lat)/1000;
+            const destlon = Math.round(1000*lon)/1000;
     
             this.setState({
                 destLat: destlat,
@@ -198,15 +160,46 @@ class PlayGame extends Component {
         })
     }
 
+    //This creates a new date based on the difference between the start and the end of their run
     timeCompare = () => {
         const endTime = new Date();
         const timeDiff = endTime - this.state.startTime
         const score = new Date(timeDiff)
-        this.setState({
-            time: score.getUTCHours() + ':' + score.getUTCMinutes() + ':' + score.getUTCSeconds(),
-            endRedirect: true
+        //This post returns the highscore data from your ID then redirects
+        this.postHighScore(score).then(res => {
+            this.setState({
+                leaderData: res,
+                endRedirect: true
+            })
         })
     }
+
+    //HIGHSCORE functions
+    //Post to database the score
+    postHighScore = (score) => {
+        return new Promise (
+            (resolve, reject) => {
+                API.saveUserScore({
+                name: this.props.location.state.username,
+                hours: score.getUTCHours(),
+                minutes: score.getUTCMinutes(),
+                seconds: score.getUTCSeconds(),
+                gameid: this.props.location.state.gameId
+                }).then(res => {
+                    console.log(res);
+                    API.getScoreByGameId(this.props.location.state.gameId)
+                    .then(res => resolve(res.data))
+                    .catch(e => console.log(e))
+                })
+                .catch(e => {
+                    console.log(e);
+                    API.getScoreByGameId(this.props.location.state.gameId)
+                    .then(res => resolve(res.data))
+                    .catch(e => console.log(e))
+                })
+            }
+        )
+    } 
 
 
     //RENDER functions
@@ -219,10 +212,15 @@ class PlayGame extends Component {
         }
         else if (this.state.endRedirect){
             return (
-                <div>
-                    <p>You did it!!!  Congrats!!!!</p>
-                    <p>Your time was {this.state.time}</p>
-                </div>
+                <Redirect to={{
+                    pathname: '/endgame',
+                    state: { data: this.state.leaderData }
+                  }}
+                />
+                // <div>
+                //     <p>You did it!!!  Congrats!!!!</p>
+                //     <p>Your time was {this.state.time}</p>
+                // </div>
             )
         }
         return(
@@ -235,13 +233,6 @@ class PlayGame extends Component {
                 <p>{this.state.destLat}</p>
                 <p>{this.state.destLon}</p>
 
-                <p>Hint</p>
-                <p>{this.state.destHint}</p>
-
-                <p>Turn</p>
-                <p>{this.state.turn}</p>
-
-                <button onClick={this.same}>Make the same</button>
                 <Wrapper>
                     <Clue 
                         number={this.state.turn}
