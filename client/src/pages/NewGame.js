@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import { Redirect } from "react-router-dom";
 import API from "../utils/API"
 import Button from "../components/Button"
 import {Input} from "../components/Form"
@@ -10,6 +11,7 @@ const BLANKFIELDERROR = "Fields cannot be blank, Please enter valid values"
 class NewGame extends Component {
     state = {
         allgames: [],
+        redirect: false,
         errtextId: false,
         errtextEmpty: false,
         game: {
@@ -70,8 +72,10 @@ class NewGame extends Component {
         if(!this.isGameidExists() && !this.isEmpty()){
 
             API.saveGame(this.state.game)
-            .then(res => this.setState({game: {...this.state.game, gameid: "", 
-                                                    locations: [{clue: "", latitude: "", longitude: ""}]}}))
+            .then(res => {
+                this.setState({game: {...this.state.game, gameid: "", locations: [{clue: "", latitude: "", longitude: ""}]},
+                                redirect: true})
+            })
             .catch(err => console.log(err))
         }
     }
@@ -100,6 +104,11 @@ class NewGame extends Component {
 
     render(){
         let game = this.state.game
+        if (this.state.redirect) {
+            return (<Redirect to={{
+              pathname: "/"
+            }}/>)
+          }
         return(
             <Wrapper>
                 <p>{this.state.errtextId ? GAMEIDERROR : ""}</p>

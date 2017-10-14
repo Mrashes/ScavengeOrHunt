@@ -33,15 +33,16 @@ render(){
         >
           CREATE
         </FormBtn>
-        {
-          this.isMobile() ? (
+        {/* {
+          this.isMobile() ? ( */}
             <FormBtn
               className="btn btn-success"
               role="button"
               to="/start"
             >
               PLAY
-            </FormBtn>) : "" }
+            </FormBtn>
+            {/* ) : "" } */}
       </form>
     </Wrapper>
   )}
