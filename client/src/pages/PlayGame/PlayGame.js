@@ -14,6 +14,8 @@ import LocationSound from '../audio/locationAlert.mp3'
     //On move
 //TODO Buy domain
 //TODO Move aframe box down
+//TODO Amanda's phone sucks
+//TODO Audio delay
 
 //Amanda passed data
 //this.props.location.state.username
@@ -114,7 +116,7 @@ class PlayGame extends Component {
 
     //This parses the locations data to return what the next destination is
     getDestinationLocation = () => {
-        if (this.state.turn >= this.state.locations.length){
+        if (this.state.turn > this.state.locations.length){
             this.timeCompare()
         }
         else {
