@@ -1,5 +1,6 @@
 import React from "react";
 import Wrapper from "../../components/Wrapper";
+import { FormBtn } from "../../components/Form";
 import "./EndGame.css"
 //props.location.state.data
 //score is in hours min sec, combine to show score
@@ -35,6 +36,13 @@ const EndGame = props => {
                 ))}
             </tbody>
         </table>
+        <FormBtn 
+            className="btn btn-success"
+            role="button"
+            to="/"
+        >
+            Home
+        </FormBtn>
     </Wrapper> )
 }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../Button";
+import Wrapper from "../Wrapper";
 
 const Story = props => 
     <div className="panel panel-default">

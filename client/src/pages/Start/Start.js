@@ -96,6 +96,13 @@ class Start extends Component {
             Start Hunt
           </FormBtn>
         </form>
+        <FormBtn 
+            className="btn btn-success"
+            role="button"
+            to="/"
+        >
+            Home
+        </FormBtn>
       </Wrapper>
     );
   }
