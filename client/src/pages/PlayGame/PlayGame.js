@@ -211,7 +211,14 @@ class PlayGame extends Component {
 
     //RENDER functions
     render() {
-        if (this.state.redirect) {
+        if(this.state.new) {
+            return (
+                <Story 
+                    done={this.done}
+                />
+            )
+        }
+        else if (this.state.redirect) {
             return (<Aframe 
                         destination={this.getDestinationLocation} 
                         redirect={this.handleRedirect}
@@ -228,13 +235,6 @@ class PlayGame extends Component {
                 //     <p>You did it!!!  Congrats!!!!</p>
                 //     <p>Your time was {this.state.time}</p>
                 // </div>
-            )
-        }
-        else if(this.state.new) {
-            return (
-                <Story 
-                    done={this.done}
-                />
             )
         }
         return(
