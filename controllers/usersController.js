@@ -18,7 +18,7 @@ module.exports = {
     },
     findScoresByGameId: function(req, res) {
         db.User
-          .find({gameid: req.params.id})
+          .find({gameid: req.params.id}).sort({hours: 1, minutes: 1, seconds: 1})
           .then(data => res.json(data))
           .catch(err => res.status(422).json(err));
     },
