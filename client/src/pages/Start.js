@@ -3,13 +3,25 @@ import { Input, FormBtn } from "../components/Form";
 import { Redirect } from "react-router-dom";
 import Header from "../components/Header";
 import Wrapper from "../components/Wrapper";
+import API from "../utils/API"
 import "./Start.css";
+
+const GAMEIDERROR = "Game ID does not exist, Please enter a valid Game ID"
 
 class Start extends Component {
   state = {
     username: "",
     gameId: "",
-    redirect: false
+    redirect: false,
+    errtextId: false,
+    routeObj: {},
+    allgames: [],
+  }
+
+  componentDidMount = () => {
+    API.getAllGames()
+    .then(res => this.setState({allgames: res.data.map((game, i) => game.gameid)}))
+    .catch(err => console.log(err))
   }
 
   handleStartGame = username => {
@@ -27,13 +39,30 @@ class Start extends Component {
     //event.preventDefault();
   };
 
+  isGameidExists = () =>{
+    const curgameid = this.state.gameId.trim();
+    //let routeObj={}
+    console.log("test")
+ 
+    if(this.state.allgames.includes(curgameid)){
+        this.setState({routeObj: {
+          pathname: '/game',
+          state: {username: this.state.username, gameId: this.state.gameId}}, 
+          errtextId: false, redirect: true})
+    }
+    else{
+      
+      this.setState({routeObj: {pathname: '/start'}, errtextId: true, redirect: false})
+    }
+  }
+
   render() {
-    // if (this.state.redirect) {
-    //   return (<Redirect to={{
-    //     pathname: '/login',
-    //     state: { referrer: currentLocation }
-    //   }}/>)
-    // }
+    if (this.state.redirect) {
+      return (<Redirect to={{
+        pathname: this.state.routeObj.pathname,
+        state: this.state.routeObj.state 
+      }}/>)
+    }
     return (
       <Wrapper>
         <Header>
@@ -41,6 +70,7 @@ class Start extends Component {
           <div>Or</div>
           <div>Hunt</div>
         </Header>
+        <p>{this.state.errtextId ? GAMEIDERROR : ""}</p>
         <form>
           <Input
             value={this.state.username}
@@ -59,11 +89,9 @@ class Start extends Component {
           <FormBtn
             className="btn btn-success"
             role="button"
-            to={{
-              pathname: '/game',
-              state: {username: this.state.username, gameId: this.state.gameId}
-            }}
-            disabled={!(this.state.username)}
+            onClick={this.isGameidExists}
+            to={{pathname: '/start'}}
+            disabled={!(this.state.username && this.state.gameId)}
           >
             Start Hunt
           </FormBtn>
