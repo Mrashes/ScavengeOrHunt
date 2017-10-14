@@ -164,8 +164,6 @@ class Aframe extends Component {
 
                 </Scene>
 
-                <audio ref="shoot" src={ShootSound} preload></audio>
-
                 <p className="clicks">clicks: {this.state.counter}</p>
 
                 <video className="unselectable"></video>
