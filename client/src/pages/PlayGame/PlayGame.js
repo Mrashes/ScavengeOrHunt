@@ -5,7 +5,7 @@ import Aframe from '../Aframe';
 import Wrapper from '../../components/Wrapper';
 import Clue from '../../components/Clue'
 import Story from '../../components/Story';
-import LocationSound from '../audio/locationAlert.mp3'
+// import LocationSound from '../audio/locationAlert.mp3'
 
 //TODO reticle disappering on first shot -- Was linked to animation so I removed the animation
 //TODO Aframe animations
@@ -14,7 +14,6 @@ import LocationSound from '../audio/locationAlert.mp3'
     //On move
 //TODO Buy domain
 //TODO Move aframe box down
-//TODO Amanda's phone sucks
 //TODO Audio delay
 
 //Amanda passed data
@@ -71,9 +70,9 @@ class PlayGame extends Component {
     compareLocations = () => {
         //if location comparison correct then display the aframe environment
         if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
-            //chime to indicate you're there
-            var audio = new Audio(LocationSound)
-            audio.play();
+        
+            //This vibrates indicating you got location
+            window.navigator.vibrate(200);
 
             //direct to aframe
             this.setState({

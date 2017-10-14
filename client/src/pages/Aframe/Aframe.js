@@ -3,7 +3,7 @@ import './Aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
-import ShootSound from './../audio/shootSound.mp3'
+// import ShootSound from './../audio/shootSound.mp3'
 
 //https://github.com/ngokevin/aframe-react
 
@@ -37,8 +37,8 @@ class Aframe extends Component {
         });
         const counter = this.state.counter
 
-        var audio = new Audio(ShootSound)
-        audio.play();
+        //This vibrates indicating you hit it
+        window.navigator.vibrate(200);
 
         //move to another side
         this.moveBox()
@@ -163,8 +163,6 @@ class Aframe extends Component {
                     </Entity>
 
                 </Scene>
-
-                <audio ref="shoot" src={ShootSound} preload></audio>
 
                 <p className="clicks">HITS: {this.state.counter}</p>
 

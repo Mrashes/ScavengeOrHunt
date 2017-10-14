@@ -1,9 +1,7 @@
 {
   "main.css": "static/css/main.f375882c.css",
   "main.css.map": "static/css/main.f375882c.css.map",
-  "main.js": "static/js/main.c07c43c4.js",
-  "main.js.map": "static/js/main.c07c43c4.js.map",
-  "static/media/locationAlert.mp3": "static/media/locationAlert.a5ac25ec.mp3",
-  "static/media/purple2.jpg": "static/media/purple2.2d969e3e.jpg",
-  "static/media/shootSound.mp3": "static/media/shootSound.de8877a1.mp3"
+  "main.js": "static/js/main.b28f2552.js",
+  "main.js.map": "static/js/main.b28f2552.js.map",
+  "static/media/purple2.jpg": "static/media/purple2.2d969e3e.jpg"
 }
