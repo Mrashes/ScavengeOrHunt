@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom"
 import API from "../../utils/API"
 import Button from "../../components/Button"
 import Wrapper from "../../components/Wrapper"
-import {Input} from "../components/Form"
+import {Input} from "../../components/Form"
 import Error from "../../components/Error"
 import "./NewGame.css";
 
@@ -162,7 +162,6 @@ class NewGame extends Component {
                                 />
                             </div>
 
-<<<<<<< HEAD:client/src/pages/NewGame/NewGame.js
                             <div className="one-third">
                                 <div>
                                     <label htmlFor="latitude">Latitude</label>
@@ -189,17 +188,6 @@ class NewGame extends Component {
                                     placeholder="Longitude for this location (required)"
                                 />
                             </div> 
-=======
-                            <label htmlFor="longitude">Longitude</label>   
-                            <input 
-                                type="number"
-                                value={location.longitude}
-                                onChange={this.handleInputChange(index)}
-                                name="longitude"
-                                placeholder="Enter the longitude for this location (required from 2nd location onwards)"
-                            /> 
-                            {(index>0) ? (<Button onClick={this.handleDelete(index)}>X</Button>) : ("") }
->>>>>>> origin:client/src/pages/NewGame.js
                         </div>
                     ))}                         
                     <Button onClick = {this.handleAdd}>

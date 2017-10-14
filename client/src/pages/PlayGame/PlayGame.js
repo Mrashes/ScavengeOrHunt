@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
-import API from '../utils/API.js';
-import Aframe from './Aframe.js';
-import Wrapper from '../components/Wrapper';
-import Clue from '../components/Clue';
-import LocationSound from './audio/locationAlert.mp3'
+import API from '../../utils/API.js';
+import Aframe from '../Aframe';
+import Wrapper from '../../components/Wrapper';
+import Clue from '../../components/Clue';
+import LocationSound from '../audio/locationAlert.mp3'
 
 //TODO reticle disappering on first shot -- Was linked to animation so I removed the animation
 //TODO Aframe animations

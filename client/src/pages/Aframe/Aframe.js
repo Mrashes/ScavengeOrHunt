@@ -3,9 +3,7 @@ import './Aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
-
-
-import ShootSound from './audio/shootSound.mp3'
+import ShootSound from './../audio/shootSound.mp3'
 
 //https://github.com/ngokevin/aframe-react
 

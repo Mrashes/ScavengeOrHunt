@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Input, FormBtn } from "../components/Form";
 import { Redirect } from "react-router-dom";
-import Header from "../components/Header";
-import Wrapper from "../components/Wrapper";
-import API from "../utils/API"
+import Header from "../../components/Header";
+import Wrapper from "../../components/Wrapper";
+import { Input, FormBtn } from "../../components/Form";
+import API from "../../utils/API"
 import "./Start.css";
 
 const GAMEIDERROR = "Game ID does not exist, Please enter a valid Game ID"

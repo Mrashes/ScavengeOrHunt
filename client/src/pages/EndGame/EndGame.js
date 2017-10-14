@@ -1,47 +1,41 @@
 import React from "react";
 import Wrapper from "../../components/Wrapper";
+import "./EndGame.css"
 //props.location.state.data
 //score is in hours min sec, combine to show score
 
-const EndGame = props =>
-    <Wrapper>
+const EndGame = props => {
+    const formatDate = date => {
+        const month = date.toString().slice(5,7);
+        const day = date.toString().slice(8,10);
+        const year = date.toString().slice(0,4);
+        return `${month}/${day}/${year}`
+    }
+
+    return ( <Wrapper>
         <h1>Game Over!</h1>
         <h2>LeaderBoard</h2>
-        <table class="table">
+        <table className="table leaderboard">
             <thead>
                 <tr>
-                <th>#</th>
-                <th>Username</th>
-                <th>Time</th>
-                <th>Date</th>
+                    <th scope="row">#</th>
+                    <th>Username</th>
+                    <th>Time</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 {props.location.state.data.map((user, index) => (
-                    <tr>
+                    <tr key={index}>
                         <th scope="row">{index+1}</th>
-                        <td>user.name</td>
-                        <td>{user.hours}:{user.mintes}:{user.seconds}</td>
-                        <td>{user.date.toString()}</td>
+                        <td>{user.name}</td>
+                        <td>{user.hours}:{user.minutes}:{user.seconds}</td>
+                        <td>{formatDate(user.scoredate)}</td>
                     </tr>
                 ))}
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>@fat</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>@twitter</td>
-                </tr>
             </tbody>
         </table>
-    </Wrapper>
+    </Wrapper> )
+}
 
 export default EndGame;
