@@ -15,6 +15,7 @@ import Story from '../../components/Story';
 //TODO Buy domain
 //TODO Move aframe box down
 //TODO Audio delay
+//TODO custom Models
 
 //Amanda passed data
 //this.props.location.state.username
