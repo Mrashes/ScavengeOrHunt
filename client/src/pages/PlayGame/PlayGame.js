@@ -237,13 +237,13 @@ class PlayGame extends Component {
         }
         return(
             <div>
-                <p>Current Coords</p>
+                {/* <p>Current Coords</p>
                 <p>{this.state.currLat}</p>
                 <p>{this.state.currLon}</p>
 
                 <p>Destination</p>
                 <p>{this.state.destLat}</p>
-                <p>{this.state.destLon}</p>
+                <p>{this.state.destLon}</p> */}
 
                 <Wrapper>
                     <Clue 
