@@ -1,0 +1,28 @@
+.location-form {
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+    text-align: center;
+}
+
+.input-label {
+    padding-top: 1em;
+}
+
+.gameId-input {
+    width: 70%;
+    text-align: center;
+}
+
+@media screen 
+    and (min-device-width: 1200px) 
+    and (max-device-width: 1600px) 
+    and (-webkit-min-device-pixel-ratio: 1) { 
+        .one-third{
+            display: inline-block;
+            width: 33%;
+            padding: 0 1em;
+        }
+} 
