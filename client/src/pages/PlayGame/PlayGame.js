@@ -14,7 +14,6 @@ import LocationSound from '../audio/locationAlert.mp3'
     //On move
 //TODO Buy domain
 //TODO Move aframe box down
-//TODO Amanda's phone sucks
 //TODO Audio delay
 
 //Amanda passed data
@@ -237,13 +236,13 @@ class PlayGame extends Component {
         }
         return(
             <div>
-                {/* <p>Current Coords</p>
+                <p>Current Coords</p>
                 <p>{this.state.currLat}</p>
                 <p>{this.state.currLon}</p>
 
                 <p>Destination</p>
                 <p>{this.state.destLat}</p>
-                <p>{this.state.destLon}</p> */}
+                <p>{this.state.destLon}</p>
 
                 <Wrapper>
                     <Clue 
