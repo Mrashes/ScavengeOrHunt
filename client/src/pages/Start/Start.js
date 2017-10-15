@@ -7,6 +7,7 @@ import API from "../../utils/API"
 import "./Start.css";
 
 const GAMEIDERROR = "Game ID does not exist, Please enter a valid Game ID"
+const USERNAMEERROR = "User Name exists, Please enter a new User name"
 
 class Start extends Component {
   state = {
@@ -14,8 +15,10 @@ class Start extends Component {
     gameId: "",
     redirect: false,
     errtextId: false,
+    erruserName: false,
     routeObj: {},
     allgames: [],
+    allusers: []    
   }
 
   componentDidMount = () => {
@@ -37,19 +40,30 @@ class Start extends Component {
 
   isGameidExists = () =>{
     const curgameid = this.state.gameId.trim();
-    //let routeObj={}
-    console.log("test")
- 
+    this.setState({errtextId: false, erruserName: false})        
     if(this.state.allgames.includes(curgameid)){
-        this.setState({routeObj: {
-          pathname: '/game',
-          state: {username: this.state.username, gameId: this.state.gameId}}, 
-          errtextId: false, redirect: true})
+      API.getScoreByGameId(curgameid)
+      .then(res => {
+        if(this.isUserNameExists(res.data)===undefined){
+          this.setState({routeObj: {
+            pathname: '/game',
+            state: {username: this.state.username, gameId: this.state.gameId}}, 
+            errtextId: false, redirect: true})
+        }      
+        else{
+          this.setState({routeObj: {pathname: '/start'}, erruserName: true, redirect: false})        
+        }
+      }).catch(err => console.log(err))     
     }
-    else{
-      
+    else{      
       this.setState({routeObj: {pathname: '/start'}, errtextId: true, redirect: false})
     }
+
+  }
+
+  isUserNameExists = (users) => {
+    const curusername = this.state.username.trim();
+    return users.find((obj) => obj.name.toLowerCase()===curusername.toLowerCase())
   }
 
   render() {
@@ -67,6 +81,7 @@ class Start extends Component {
           <div>Hunt</div>
         </Header>
         <p>{this.state.errtextId ? GAMEIDERROR : ""}</p>
+        <p>{this.state.erruserName ? USERNAMEERROR : ""}</p>
         <form>
           <Input
             value={this.state.username}
