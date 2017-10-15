@@ -1,11 +1,19 @@
+body, html{
+  min-height: 100%;
+}
+
 .App {
   color: white;
   text-align: center; 
   font-family: 'Orbitron', sans-serif;
 }
 body {
-  background-image: url("./images/purple2.jpg");
+  background: transparent url("./images/purple2.jpg") scroll 0 0 no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
+  
 }
 
 .App-logo {
