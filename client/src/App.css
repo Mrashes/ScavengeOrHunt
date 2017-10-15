@@ -1,6 +1,11 @@
 .App {
-   text-align: center; 
+  color: white;
+  text-align: center; 
   font-family: 'Orbitron', sans-serif;
+}
+body {
+  background-image: url("./images/purple2.jpg");
+  background-size: cover;
 }
 
 .App-logo {

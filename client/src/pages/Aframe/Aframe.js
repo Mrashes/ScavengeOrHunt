@@ -164,7 +164,7 @@ class Aframe extends Component {
 
                 </Scene>
 
-                <p className="clicks">clicks: {this.state.counter}</p>
+                <p className="clicks">HITS: {this.state.counter}</p>
 
                 <video className="unselectable"></video>
             </div>
