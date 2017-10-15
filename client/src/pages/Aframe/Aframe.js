@@ -4,6 +4,10 @@ import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
+import carModel from '../../media/flyingCar/model.obj'
+import carMaterial from '../../media/flyingCar/materials.mtl'
+import penguinModel from '../../media/Penguin/model.obj'
+import penguinMaterial from '../../media/Penguin/materials.mtl'
 
 //https://github.com/ngokevin/aframe-react
 
@@ -131,6 +135,39 @@ class Aframe extends Component {
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
+                    <a-assets>
+                        <a-asset-item id="ship-obj" src={carModel}></a-asset-item>
+                        <a-asset-item id="ship-mtl" src={carMaterial}></a-asset-item>
+                        <a-asset-item id="penguin-obj" src={penguinModel}></a-asset-item>
+                        <a-asset-item id="penguin-mtl" src={penguinMaterial}></a-asset-item>
+                    </a-assets>
+
+                    <Entity id="ship"
+                        obj-model="obj: #ship-obj; mtl: #ship-mtl"
+                        position={{'id':0, 'x': 3, 'y': 1.5, 'z': 0}}
+                        animation__moveToNew={{
+                                property: 'position', 
+                                dir: 'alternate', 
+                                dur: 1000, 
+                                loop: true,
+                                from:this.position,
+                                to: {'id':0, 'x': 0, 'y': 1.5, 'z': 3}
+                            }}
+                        >
+
+
+{/* attribute="position" from="1 1 1" to="2 4 -8" */}
+                        <Entity 
+                            obj-model="obj: #penguin-obj; mtl: #penguin-mtl"
+                            scale={{'x':.5,  'y':.5, 'z':.5}}
+                            rotation={{'x':0, 'y':90, 'z':0}}
+                            position={{'x':0, 'y':0.038, 'z':0.038}} 
+                            />
+
+                            
+
+                    </Entity>
+
                     <Entity id="box"
                         geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}
@@ -154,9 +191,11 @@ class Aframe extends Component {
                                 width: 0.2
                             }}
                             material={{color: '#24CAFF'}}/>
-
                     </Entity>
-                    <Entity primitive="a-camera" wasd-controls-enabled="false">
+
+                    {/* wasd-controls-enabled="false" */}
+
+                    <Entity primitive="a-camera">
                         <Entity 
                             primitive="a-cursor" 
                         />
