@@ -69,8 +69,16 @@ class PlayGame extends Component {
     //LOCATION based functions
 
     compareLocations = () => {
+        //alias creation
+        const destLat = this.state.destLat
+        const destLon = this.state.destLon
+
+        //makes a range of numbers for the reference
+        const latTruth = destLat-.003<=this.state.currLat<=destLat+.003
+        const lonTruth = destLon-.003<=this.state.currLon<=destLon+.003
+
         //if location comparison correct then display the aframe environment
-        if (this.state.currLat === this.state.destLat && this.state.currLon === this.state.destLon) {
+        if (latTruth && lonTruth) {
         
             //This vibrates indicating you got location
             window.navigator.vibrate(200);
