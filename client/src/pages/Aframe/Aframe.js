@@ -156,6 +156,14 @@ class Aframe extends Component {
                             material={{color: '#24CAFF'}}/>
 
                     </Entity>
+
+                    <Entity 
+                        obj-model={{obj:'#cloud-obj'}}
+                        position={{'x':0, 'y':2, 'z':-3}}
+                        material={{color: 'white', opacity: 1}}
+                        animation__opacity={{property: 'material.opacity', dur:1000, to:0}}
+                    />
+
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
                             primitive="a-cursor" 
