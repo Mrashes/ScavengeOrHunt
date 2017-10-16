@@ -14,7 +14,7 @@ class Aframe extends Component {
         shape: 'box',
         counter: 0,
         counterTarget: this.props.targetClicks,
-        boxPosition: {'id':0, 'x': 0, 'y': 3, 'z': -3},
+        boxPosition: {'id':0, 'x': 0, 'y': 2, 'z': -3},
         // reticle: ""
     }
 
@@ -82,7 +82,7 @@ class Aframe extends Component {
     //This sucks
     moveBox = () => {
         //list of all locations of box
-        const boxPosList = [{'id':0, 'x': 0, 'y': 3, 'z': -3}, {'id':1, 'x': -3, 'y': 3, 'z': 0}, {'id':2, 'x': 0, 'y': 3, 'z': 3}, {'id':3, 'x': 3, 'y': 3, 'z': 0}]
+        const boxPosList = [{'id':0, 'x': 0, 'y': 2, 'z': -3}, {'id':1, 'x': -3, 'y': 2, 'z': 0}, {'id':2, 'x': 0, 'y': 2, 'z': 3}, {'id':3, 'x': 3, 'y': 2, 'z': 0}]
         //current state of box
         const boxPosition = this.state.boxPosition
         //filter out current location
