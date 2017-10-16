@@ -4,6 +4,8 @@ import 'aframe';
 import 'aframe-animation-component';
 import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
+import cloudModel from '../../media/Cloud/model.obj'
+import cloudMaterial from '../../media/Cloud/materials.mtl'
 
 //https://github.com/ngokevin/aframe-react
 
@@ -15,7 +17,7 @@ class Aframe extends Component {
         counter: 0,
         counterTarget: this.props.targetClicks,
         boxPosition: {'id':0, 'x': 0, 'y': 2, 'z': -3},
-        // reticle: ""
+        cloudPosition: {}
     }
 
     componentDidMount() {
@@ -93,7 +95,9 @@ class Aframe extends Component {
         const nextBox = newBox.filter(object => object["id"] !== forbidden) 
         // find the index
         const index = this.getRandomInt(0, nextBox.length)
+
         this.setState({
+            cloudPosition: boxPosition,
             boxPosition: nextBox[index]
         });
     }
@@ -131,6 +135,11 @@ class Aframe extends Component {
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
+                    <a-asset>
+                        <a-asset-item id="cloud-obj" src={cloudModel}></a-asset-item>
+                        <a-asset-item id="cloud-mtl" src={cloudMaterial}></a-asset-item>
+                    </a-asset>
+
                     <Entity id="box"
                         geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}
@@ -156,6 +165,14 @@ class Aframe extends Component {
                             material={{color: '#24CAFF'}}/>
 
                     </Entity>
+
+                    {/* <Entity 
+                        obj-model={{obj:'#cloud-obj'}}
+                        position={this.state.cloudPosition}
+                        material={{color: 'white', opacity: 1}}
+                        animation__opacity={{property: 'material.opacity', startEvents:"",dur:1000, to:0}}
+                    /> */}
+
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
                             primitive="a-cursor" 

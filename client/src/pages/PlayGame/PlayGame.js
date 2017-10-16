@@ -74,8 +74,9 @@ class PlayGame extends Component {
         const destLon = this.state.destLon
 
         //makes a range of numbers for the reference
+        //This only works in the Northwestern hemisphere
         const latTruth = destLat-.0003<=this.state.currLat<=destLat+.0003
-        const lonTruth = destLon-.0003<=this.state.currLon<=destLon+.0003
+        const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
 
         //if location comparison correct then display the aframe environment
         if (latTruth && lonTruth) {
