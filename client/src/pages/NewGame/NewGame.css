@@ -28,3 +28,13 @@
             padding: 0 1em;
         }
 } 
+
+.glink, .glink:visited{
+    color: #5cb85c;
+}
+
+.glink:hover{
+    color: #5cb85c;
+    background-color: #fff;
+}
+
