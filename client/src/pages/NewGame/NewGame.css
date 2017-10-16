@@ -24,7 +24,7 @@
     and (-webkit-min-device-pixel-ratio: 1) { 
         .one-third{
             display: inline-block;
-            width: 33%;
+            width: 30%;
             padding: 0 1em;
         }
 } 
