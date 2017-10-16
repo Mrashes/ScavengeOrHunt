@@ -18,7 +18,7 @@ class Aframe extends Component {
         shape: 'box',
         counter: 0,
         counterTarget: this.props.targetClicks,
-        boxPosition: {'id':0, 'x': 0, 'y': 2, 'z': -3},
+        boxPosition: {'id':0, 'x': 0, 'y': 1, 'z': -3},
         // reticle: ""
     }
 
@@ -86,7 +86,7 @@ class Aframe extends Component {
     //This sucks
     moveBox = () => {
         //list of all locations of box
-        const boxPosList = [{'id':0, 'x': 0, 'y': 2, 'z': -3}, {'id':1, 'x': -3, 'y': 2, 'z': 0}, {'id':2, 'x': 0, 'y': 2, 'z': 3}, {'id':3, 'x': 3, 'y': 2, 'z': 0}]
+        const boxPosList = [{'id':0, 'x': 0, 'y': 1, 'z': -3}, {'id':1, 'x': -3, 'y': 1, 'z': 0}, {'id':2, 'x': 0, 'y': 1, 'z': 3}, {'id':3, 'x': 3, 'y': 1, 'z': 0}]
         //current state of box
         const boxPosition = this.state.boxPosition
         //filter out current location
@@ -144,23 +144,16 @@ class Aframe extends Component {
 
                     <Entity id="ship"
                         obj-model="obj: #ship-obj; mtl: #ship-mtl"
-                        position={{'id':0, 'x': 3, 'y': 1.5, 'z': 0}}
-                        animation__moveToNew={{
-                                property: 'position', 
-                                dir: 'alternate', 
-                                dur: 1000, 
-                                loop: true,
-                                from:this.position,
-                                to: {'id':0, 'x': 0, 'y': 1.5, 'z': 3}
-                            }}
+                        position={this.state.boxPosition}
+                        events={{click: this.counterIncrement}}
+                        animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
+                        scale={{'x':3, 'y':3, 'z':3}}
                         >
-
-
-{/* attribute="position" from="1 1 1" to="2 4 -8" */}
                         <Entity 
-                            obj-model="obj: #penguin-obj; mtl: #penguin-mtl"
+                            obj-model={{obj:'#penguin-obj', mtl: '#penguin-mtl'}}
+                            animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
                             scale={{'x':.5,  'y':.5, 'z':.5}}
-                            rotation={{'x':0, 'y':90, 'z':0}}
+                            rotation={{'x':0, 'y':0, 'z':0}}
                             position={{'x':0, 'y':0.038, 'z':0.038}} 
                             />
 
@@ -168,7 +161,18 @@ class Aframe extends Component {
 
                     </Entity>
 
-                    <Entity id="box"
+                    {/* animation__moveToNew={{
+                                property: 'position', 
+                                // dir: 'alternate', 
+                                dur: 1000, 
+                                // loop: true,
+                                start:'click',
+                                from:this.position,
+                                to: this.state.boxPosition
+                            }} */}
+
+
+                    {/* <Entity id="box"
                         geometry={{primitive: this.state.shape}}
                         material={{color: this.state.color, opacity: 0.6}}
                         animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
@@ -191,7 +195,7 @@ class Aframe extends Component {
                                 width: 0.2
                             }}
                             material={{color: '#24CAFF'}}/>
-                    </Entity>
+                    </Entity> */}
 
                     {/* wasd-controls-enabled="false" */}
 
