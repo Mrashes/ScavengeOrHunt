@@ -188,6 +188,7 @@ class NewGame extends Component {
                                     placeholder="Longitude for this location (required)"
                                 />
                             </div> 
+                            {(index>0) ? (<Button onClick={this.handleDelete(index)}>X</Button>) : ("") }
                         </div>
                     ))}                         
                     <Button onClick = {this.handleAdd}>
@@ -206,6 +207,7 @@ class NewGame extends Component {
                         </FormBtn>  
                     </div>                                                 
                 </form>
+                <p>To get Latitude/Longitude for a location in <a className="glink" href="https://www.google.com/maps" target="_new">Google maps</a>, right click and select what's here</p>
             </Wrapper>
         )
     }

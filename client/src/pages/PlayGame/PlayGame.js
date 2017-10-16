@@ -247,19 +247,25 @@ class PlayGame extends Component {
         }
         return(
             <div>
-                <p>Current Coords</p>
-                <p>{this.state.currLat}</p>
-                <p>{this.state.currLon}</p>
+                {
+                    (this.props.location.state.gameId.endsWith('Test')) ? 
+                    (<div>
+                        <p>Current Coords</p>
+                        <p>{this.state.currLat}</p>
+                        <p>{this.state.currLon}</p>
 
-                <p>Destination</p>
-                <p>{this.state.destLat}</p>
-                <p>{this.state.destLon}</p> 
+                        <p>Destination</p>
+                        <p>{this.state.destLat}</p>
+                        <p>{this.state.destLon}</p>
+                     </div>) : ("")
+                }
 
                 <Wrapper>
                     <Clue 
                         number={this.state.turn}
                         hint={this.state.destHint}
                         same={this.same}
+                        gameId={this.props.location.state.gameId}
                     />
                 </Wrapper>
             </div>
