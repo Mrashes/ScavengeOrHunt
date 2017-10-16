@@ -8,6 +8,8 @@ import carModel from '../../media/flyingCar/model.obj'
 import carMaterial from '../../media/flyingCar/materials.mtl'
 import penguinModel from '../../media/Penguin/model.obj'
 import penguinMaterial from '../../media/Penguin/materials.mtl'
+import cloudModel from '../../media/Cloud/model.obj'
+import cloudMaterial from '../../media/Cloud/materials.mtl'
 
 //https://github.com/ngokevin/aframe-react
 
@@ -52,7 +54,7 @@ class Aframe extends Component {
         }
     }
 
-    //Randomize how the shape looks
+    //Randomize how the shape looks &  moves it so its not in front of the player
     changeShapeProperties = () => {
         const shape = ['box','cone','cylinder','sphere', 'torus'];
         const color = ['red', 'orange', 'yellow', 'green', 'blue'];
@@ -65,7 +67,7 @@ class Aframe extends Component {
         })
     }
 
-    //this bascially handles the shit
+    //this handles edge cases
     boxEdgeCase = (boxList, boxPos) =>  {
         //if id is zero find the biggest id
         if (boxPos["id"] === 0) {
@@ -141,6 +143,8 @@ class Aframe extends Component {
                         <a-asset-item id="ship-mtl" src={carMaterial}></a-asset-item>
                         <a-asset-item id="penguin-obj" src={penguinModel}></a-asset-item>
                         <a-asset-item id="penguin-mtl" src={penguinMaterial}></a-asset-item>
+                        <a-asset-item id="cloud-obj" src={cloudModel}></a-asset-item>
+                        <a-asset-item id="cloud-mtl" src={cloudMaterial}></a-asset-item>
                     </a-assets>
 
                     {/* For some reason you have to have the clickable object in a container to make it more effective */}
@@ -167,6 +171,14 @@ class Aframe extends Component {
 
                         </Entity>
                     </Entity>
+
+
+                    <Entity 
+                        obj-model={{obj:'#cloud-obj'}}
+                        position={{'x':0, 'y':2, 'z':-3}}
+                        material={{color: 'white', opacity: 1}}
+                        animation__opacity={{property: 'material.opacity', dur:1000, to:0}}
+                    />
                    
 
                     {/* animation__moveToNew={{
