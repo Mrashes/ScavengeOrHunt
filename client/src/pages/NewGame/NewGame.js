@@ -188,6 +188,7 @@ class NewGame extends Component {
                                     placeholder="Longitude for this location (required)"
                                 />
                             </div> 
+                            {(index>0) ? (<Button onClick={this.handleDelete(index)}>X</Button>) : ("") }
                         </div>
                     ))}                         
                     <Button onClick = {this.handleAdd}>
