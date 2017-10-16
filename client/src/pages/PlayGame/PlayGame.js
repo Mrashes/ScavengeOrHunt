@@ -82,7 +82,8 @@ class PlayGame extends Component {
         if (latTruth && lonTruth) {
         
             //This vibrates indicating you got location
-            window.navigator.vibrate(200);
+            try{window.navigator.vibrate(200);} 
+            catch(e) {API.postErrors(e).catch(e => console.log(e))}
 
             //direct to aframe
             this.setState({
@@ -198,11 +199,11 @@ class PlayGame extends Component {
         return new Promise (
             (resolve, reject) => {
                 API.saveUserScore({
-                name: this.props.location.state.username,
-                hours: score.getUTCHours(),
-                minutes: score.getUTCMinutes(),
-                seconds: score.getUTCSeconds(),
-                gameid: this.props.location.state.gameId
+                    name: this.props.location.state.username,
+                    hours: score.getUTCHours(),
+                    minutes: score.getUTCMinutes(),
+                    seconds: score.getUTCSeconds(),
+                    gameid: this.props.location.state.gameId
                 }).then(res => {
                     console.log(res);
                     API.getScoreByGameId(this.props.location.state.gameId)

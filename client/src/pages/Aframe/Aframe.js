@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
+import API from '../../utils/API.js'
 import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
 import cloudModel from '../../media/Cloud/model.obj'
@@ -40,7 +41,12 @@ class Aframe extends Component {
         const counter = this.state.counter
 
         //This vibrates indicating you hit it
-        window.navigator.vibrate(200);
+        //There is an error on ios devices with vibrate so I set up this try catch to mitigate problem
+        try {window.navigator.vibrate(200)}
+        catch (e) {
+            console.log(e)
+            API.postErrors(e).catch(e => console.log(e))
+        }
 
         //move to another side
         this.moveBox()
@@ -95,6 +101,9 @@ class Aframe extends Component {
         const nextBox = newBox.filter(object => object["id"] !== forbidden) 
         // find the index
         const index = this.getRandomInt(0, nextBox.length)
+
+        //cloud part
+        console.log(this.refs.cloud)
 
         this.setState({
             cloudPosition: boxPosition,
@@ -166,12 +175,13 @@ class Aframe extends Component {
 
                     </Entity>
 
-                    {/* <Entity 
+                    <Entity
+                        ref='cloud'
                         obj-model={{obj:'#cloud-obj'}}
                         position={this.state.cloudPosition}
                         material={{color: 'white', opacity: 1}}
                         animation__opacity={{property: 'material.opacity', startEvents:"",dur:1000, to:0}}
-                    /> */}
+                    />
 
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
