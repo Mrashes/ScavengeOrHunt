@@ -18,7 +18,7 @@ class Aframe extends Component {
         shape: 'box',
         counter: 0,
         counterTarget: this.props.targetClicks,
-        boxPosition: {'id':0, 'x': 0, 'y': 1, 'z': -3},
+        boxPosition: {'id':0, 'x': 0, 'y': 1, 'z': -2},
         // reticle: ""
     }
 
@@ -58,6 +58,7 @@ class Aframe extends Component {
         const color = ['red', 'orange', 'yellow', 'green', 'blue'];
         const randomShape = this.getRandomInt(0, shape.length-1);
         const randomColor = this.getRandomInt(0, color.length-1);
+        this.moveBox()
         this.setState({
             shape: shape[randomShape],
             color: color[randomColor]
@@ -86,7 +87,7 @@ class Aframe extends Component {
     //This sucks
     moveBox = () => {
         //list of all locations of box
-        const boxPosList = [{'id':0, 'x': 0, 'y': 1, 'z': -3}, {'id':1, 'x': -3, 'y': 1, 'z': 0}, {'id':2, 'x': 0, 'y': 1, 'z': 3}, {'id':3, 'x': 3, 'y': 1, 'z': 0}]
+        const boxPosList = [{'id':0, 'x': 0, 'y': 1, 'z': -2}, {'id':1, 'x': -2, 'y': 1, 'z': 0}, {'id':2, 'x': 0, 'y': 1, 'z': 2}, {'id':3, 'x': 2, 'y': 1, 'z': 0}]
         //current state of box
         const boxPosition = this.state.boxPosition
         //filter out current location
@@ -142,24 +143,31 @@ class Aframe extends Component {
                         <a-asset-item id="penguin-mtl" src={penguinMaterial}></a-asset-item>
                     </a-assets>
 
-                    <Entity id="ship"
-                        obj-model="obj: #ship-obj; mtl: #ship-mtl"
-                        position={this.state.boxPosition}
-                        events={{click: this.counterIncrement}}
-                        animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
-                        scale={{'x':3, 'y':3, 'z':3}}
-                        >
-                        <Entity 
-                            obj-model={{obj:'#penguin-obj', mtl: '#penguin-mtl'}}
-                            animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
-                            scale={{'x':.5,  'y':.5, 'z':.5}}
-                            rotation={{'x':0, 'y':0, 'z':0}}
-                            position={{'x':0, 'y':0.038, 'z':0.038}} 
-                            />
+                    {/* For some reason you have to have the clickable object in a container to make it more effective */}
+                    <Entity id="container"
+                    position={this.state.boxPosition}
+                    geometry={{primitive: 'box'}}
+                    material={{transparent: true, opacity: 0} }>
+                        <Entity id="ship"
+                            obj-model="obj: #ship-obj; mtl: #ship-mtl"
+                            position={this.state.boxPosition}
+                            events={{click: this.counterIncrement}}
+                            animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
+                            scale={{'x':3, 'y':3, 'z':3}}
+                            >
+                            <Entity 
+                                obj-model={{obj:'#penguin-obj', mtl: '#penguin-mtl'}}
+                                animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
+                                scale={{'x':.5,  'y':.5, 'z':.5}}
+                                rotation={{'x':0, 'y':0, 'z':0}}
+                                position={{'x':0, 'y':0.038, 'z':0.038}} 
+                                />
 
-                            
+                                
 
+                        </Entity>
                     </Entity>
+                   
 
                     {/* animation__moveToNew={{
                                 property: 'position', 
