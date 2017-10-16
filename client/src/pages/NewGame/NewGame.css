@@ -5,6 +5,7 @@
 .input {
     width: 100%;
     text-align: center;
+    color: #000;
 }
 
 .input-label {
@@ -14,6 +15,7 @@
 .gameId-input {
     width: 70%;
     text-align: center;
+    color: #000;
 }
 
 @media screen 
