@@ -13,10 +13,19 @@ const EndGame = props => {
         return `${month}/${day}/${year}`
     }
 
+    const formatUsername = name => {
+        if(name.length < 10) {
+            return name;
+        }
+        else {
+            return `${name.slice(0,8)} ...`;
+        }
+    }
+
     return ( 
         <Wrapper>
-            <h1>Game Over!</h1>
-            <h2>LeaderBoard</h2>
+            <h2>Game Over!</h2>
+            <h3>LeaderBoard</h3>
             <table className="table leaderboard">
                 <thead>
                     <tr>
@@ -27,14 +36,18 @@ const EndGame = props => {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.location.state.data.map((user, index) => (
-                        <tr key={index}>
-                            <th className="number" scope="row">{index+1}</th>
-                            <td className="name">{user.name}</td>
-                            <td className="time">{user.hours}:{user.minutes}:{user.seconds}</td>
-                            <td className="date">{formatDate(user.scoredate)}</td>
-                        </tr>
-                    ))}
+                    {props.location.state.data.map((user, index) => {
+                        if(index <= 10){
+                            return (
+                                <tr key={index}>
+                                    <th className="number" scope="row">{index+1}</th>
+                                    <td className="name">{formatUsername(user.name)}</td>
+                                    <td className="time">{user.hours}:{user.minutes}:{user.seconds}</td>
+                                    <td className="date">{formatDate(user.scoredate)}</td>
+                                </tr>
+                            )
+                        }
+                    })}
                 </tbody>
             </table>
             <FormBtn 
