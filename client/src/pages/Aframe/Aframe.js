@@ -169,13 +169,13 @@ class Aframe extends Component {
                     <Entity id="container"
                         position={this.state.boxPosition}
                         geometry={{primitive: 'box'}}
-                        material={{transparent: true, opacity: 0} }
-                        position={this.state.boxPosition}
+                        scale={{'x':2, 'y':2, 'z':2}}
+                        material={{transparent: false, opacity: 0}}
                         events={{click: this.counterIncrement}}>
                         <Entity id="ship"
                             obj-model="obj: #ship-obj; mtl: #ship-mtl"
                             animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
-                            scale={{'x':3, 'y':3, 'z':3}}
+                            scale={{'x':2, 'y':2, 'z':2}}
                             >
                             <Entity 
                                 obj-model={{obj:'#penguin-obj', mtl: '#penguin-mtl'}}
