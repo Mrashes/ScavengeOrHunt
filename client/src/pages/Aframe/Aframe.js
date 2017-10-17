@@ -8,8 +8,6 @@ import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
 import carModel from '../../media/flyingCar/model.obj';
 import carMaterial from '../../media/flyingCar/materials.mtl';
-import penguinModel from '../../media/Penguin/model.obj';
-import penguinMaterial from '../../media/Penguin/materials.mtl';
 import cloudModel from '../../media/Cloud/model.obj';
 import cloudMaterial from '../../media/Cloud/materials.mtl';
 import alienModel from '../../media/Alien/model.obj';

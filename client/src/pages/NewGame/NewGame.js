@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom"
 import API from "../../utils/API"
 import Button from "../../components/Button"
 import Wrapper from "../../components/Wrapper"
-import {Input, FormBtn} from "../../components/Form"
+import {FormBtn} from "../../components/Form"
 import Error from "../../components/Error"
 import "./NewGame.css";
 
