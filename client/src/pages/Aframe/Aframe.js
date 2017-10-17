@@ -170,11 +170,10 @@ class Aframe extends Component {
                         position={this.state.boxPosition}
                         geometry={{primitive: 'box'}}
                         material={{transparent: true, opacity: 0} }
-                        position={this.state.boxPosition}>
+                        position={this.state.boxPosition}
+                        events={{click: this.counterIncrement}}>
                         <Entity id="ship"
                             obj-model="obj: #ship-obj; mtl: #ship-mtl"
-
-                            events={{click: this.counterIncrement}}
                             animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
                             scale={{'x':3, 'y':3, 'z':3}}
                             >
