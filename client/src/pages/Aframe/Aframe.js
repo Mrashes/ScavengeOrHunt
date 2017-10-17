@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import ReactDOM  from 'react-dom'
 import './Aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
+import API from '../../utils/API.js'
 import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
 import cloudModel from '../../media/Cloud/model.obj'
 import cloudMaterial from '../../media/Cloud/materials.mtl'
+
 
 //https://github.com/ngokevin/aframe-react
 
@@ -40,7 +43,12 @@ class Aframe extends Component {
         const counter = this.state.counter
 
         //This vibrates indicating you hit it
-        window.navigator.vibrate(200);
+        //There is an error on ios devices with vibrate so I set up this try catch to mitigate problem
+        try {window.navigator.vibrate(200)}
+        catch (e) {
+            console.log(e)
+            API.postErrors(e).catch(e => console.log(e))
+        }
 
         //move to another side
         this.moveBox()
@@ -100,6 +108,12 @@ class Aframe extends Component {
             cloudPosition: boxPosition,
             boxPosition: nextBox[index]
         });
+
+        //cloud part
+
+        const animation = ReactDOM.findDOMNode(this.refs.cloud)
+        animation.emit('cloudReset')
+
     }
 
     //this finishes the aframe game
@@ -166,12 +180,13 @@ class Aframe extends Component {
 
                     </Entity>
 
-                    {/* <Entity 
+                    <Entity
+                        ref='cloud'
                         obj-model={{obj:'#cloud-obj'}}
                         position={this.state.cloudPosition}
                         material={{color: 'white', opacity: 1}}
-                        animation__opacity={{property: 'material.opacity', startEvents:"",dur:1000, to:0}}
-                    /> */}
+                        animation__opacity={{property: 'material.opacity', restartEvents:"cloudReset", dur:1000, from:1, to:0}}
+                    />
 
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
