@@ -2,3 +2,20 @@
     text-align: left;
     margin: auto;
 }
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+.numder {
+    width: 10%;
+}
+.name {
+    width: 45%;
+}
+.time {
+    width: 20%;
+}
+.date {
+    width: 25%;
+}

@@ -30,11 +30,11 @@
 } 
 
 .glink, .glink:visited{
-    color: #5cb85c;
+    color: #0092FF;
 }
 
 .glink:hover{
-    color: #5cb85c;
+    color: #0092FF;
     background-color: #fff;
 }
 
