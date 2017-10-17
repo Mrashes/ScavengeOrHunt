@@ -6,12 +6,14 @@ import 'aframe-animation-component';
 import API from '../../utils/API.js'
 import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
-import carModel from '../../media/flyingCar/model.obj'
-import carMaterial from '../../media/flyingCar/materials.mtl'
-import penguinModel from '../../media/Penguin/model.obj'
-import penguinMaterial from '../../media/Penguin/materials.mtl'
-import cloudModel from '../../media/Cloud/model.obj'
-import cloudMaterial from '../../media/Cloud/materials.mtl'
+import carModel from '../../media/flyingCar/model.obj';
+import carMaterial from '../../media/flyingCar/materials.mtl';
+import penguinModel from '../../media/Penguin/model.obj';
+import penguinMaterial from '../../media/Penguin/materials.mtl';
+import cloudModel from '../../media/Cloud/model.obj';
+import cloudMaterial from '../../media/Cloud/materials.mtl';
+import alienModel from '../../media/Alien/model.obj';
+import alienMaterial from '../../media/Alien/materials.mtl';
 
 //https://github.com/ngokevin/aframe-react
 
@@ -23,6 +25,7 @@ class Aframe extends Component {
         counter: 0,
         counterTarget: this.props.targetClicks,
         boxPosition: {'id':0, 'x': 0, 'y': 1, 'z': -2},
+        boxRotation: {'id':0, 'x': 0, 'y': 180, 'z': 0}
         // reticle: ""
     }
 
@@ -96,21 +99,27 @@ class Aframe extends Component {
     //This sucks
     moveBox = () => {
         //list of all locations of box
-        const boxPosList = [{'id':0, 'x': 0, 'y': 1.5, 'z': -3}, {'id':1, 'x': -3, 'y': 1.5, 'z': 0}, {'id':2, 'x': 0, 'y': 1.5, 'z': 3}, {'id':3, 'x': 3, 'y': 1.5, 'z': 0}]
+        const boxPosList = [{'id':0, 'x': 0, 'y': 1, 'z': -3}, {'id':1, 'x': -3, 'y': 1, 'z': 0}, {'id':2, 'x': 0, 'y': 1, 'z': 3}, {'id':3, 'x': 3, 'y': 1, 'z': 0}]
+
+        const rotationList = [{'id':0, 'x': 0, 'y': 180, 'z': 0}, {'id':1, 'x': 0, 'y': 270, 'z': 0}, {'id':2, 'x': 0, 'y': 0, 'z': 0}, {'id':3, 'x': 0, 'y': 90, 'z': 0}]
+
         //current state of box
         const boxPosition = this.state.boxPosition
         //filter out current location
         const newBox = boxPosList.filter(object => object["id"] !== boxPosition["id"])
+        const newRot = rotationList.filter(object => object["id"] !== boxPosition["id"])
         //find what object is the edgecase
         const forbidden = this.boxEdgeCase(boxPosList, boxPosition)
         //filter out the edge case
         const nextBox = newBox.filter(object => object["id"] !== forbidden) 
+        const nextRot = newRot.filter(object => object["id"] !== forbidden)
         // find the index
         const index = this.getRandomInt(0, nextBox.length)
 
         this.setState({
             cloudPosition: boxPosition,
-            boxPosition: nextBox[index]
+            boxPosition: nextBox[index],
+            boxRotation: nextRot[index]
         });
 
         //cloud part
@@ -159,34 +168,39 @@ class Aframe extends Component {
                     <a-assets>
                         <a-asset-item id="ship-obj" src={carModel}></a-asset-item>
                         <a-asset-item id="ship-mtl" src={carMaterial}></a-asset-item>
-                        <a-asset-item id="penguin-obj" src={penguinModel}></a-asset-item>
-                        <a-asset-item id="penguin-mtl" src={penguinMaterial}></a-asset-item>
+                        <a-asset-item id="alien-obj" src={alienModel}></a-asset-item>
+                        <a-asset-item id="alien-mtl" src={alienMaterial}></a-asset-item>
                         <a-asset-item id="cloud-obj" src={cloudModel}></a-asset-item>
                         <a-asset-item id="cloud-mtl" src={cloudMaterial}></a-asset-item>
                     </a-assets>
-
+                    {/* this.state.boxPosition */}
                     {/* For some reason you have to have the clickable object in a container to make it more effective */}
                     <Entity id="container"
                         position={this.state.boxPosition}
                         geometry={{primitive: 'box'}}
-                        material={{transparent: true, opacity: 0} }
-                        position={this.state.boxPosition}
+                        scale={{'x':2, 'y':2, 'z':2}}
+                        rotation={this.state.boxRotation}
+                        material={{transparent: false, opacity: 0}}
                         events={{click: this.counterIncrement}}>
                         <Entity id="ship"
                             obj-model="obj: #ship-obj; mtl: #ship-mtl"
-                            animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
-                            scale={{'x':3, 'y':3, 'z':3}}
+                            
+                            scale={{'x':2, 'y':2, 'z':2}}
                             >
                             <Entity 
-                                obj-model={{obj:'#penguin-obj', mtl: '#penguin-mtl'}}
-                                animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
-                                scale={{'x':.5,  'y':.5, 'z':.5}}
+                                obj-model={{obj:'#alien-obj', mtl: '#alien-mtl'}}
+                                
+                                scale={{'x':.25,  'y':.25, 'z':.25}}
                                 rotation={{'x':0, 'y':0, 'z':0}}
                                 position={{'x':0, 'y':0.038, 'z':0.038}} 
                                 />
 
                         </Entity>
                     </Entity>
+                    {/* 
+                    animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
+                    animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}} 
+                    */}
                    
                     <Entity
                         ref='cloud'
