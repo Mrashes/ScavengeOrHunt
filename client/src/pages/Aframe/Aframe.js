@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import ReactDOM  from 'react-dom'
 import './Aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
+import API from '../../utils/API.js'
 import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
 import carModel from '../../media/flyingCar/model.obj'
@@ -44,7 +46,12 @@ class Aframe extends Component {
         const counter = this.state.counter
 
         //This vibrates indicating you hit it
-        window.navigator.vibrate(200);
+        //There is an error on ios devices with vibrate so I set up this try catch to mitigate problem
+        try {window.navigator.vibrate(200)}
+        catch (e) {
+            console.log(e)
+            API.postErrors(e).catch(e => console.log(e))
+        }
 
         //move to another side
         this.moveBox()
@@ -89,7 +96,7 @@ class Aframe extends Component {
     //This sucks
     moveBox = () => {
         //list of all locations of box
-        const boxPosList = [{'id':0, 'x': 0, 'y': 1, 'z': -2}, {'id':1, 'x': -2, 'y': 1, 'z': 0}, {'id':2, 'x': 0, 'y': 1, 'z': 2}, {'id':3, 'x': 2, 'y': 1, 'z': 0}]
+        const boxPosList = [{'id':0, 'x': 0, 'y': 1.5, 'z': -3}, {'id':1, 'x': -3, 'y': 1.5, 'z': 0}, {'id':2, 'x': 0, 'y': 1.5, 'z': 3}, {'id':3, 'x': 3, 'y': 1.5, 'z': 0}]
         //current state of box
         const boxPosition = this.state.boxPosition
         //filter out current location
@@ -100,9 +107,20 @@ class Aframe extends Component {
         const nextBox = newBox.filter(object => object["id"] !== forbidden) 
         // find the index
         const index = this.getRandomInt(0, nextBox.length)
+
         this.setState({
+            cloudPosition: boxPosition,
             boxPosition: nextBox[index]
         });
+
+        //cloud part
+        if (this.state.counter === 0){
+            return
+        }
+        else {
+            const animation = ReactDOM.findDOMNode(this.refs.cloud)
+            animation.emit('cloudReset')
+        }
     }
 
     //this finishes the aframe game
@@ -149,12 +167,13 @@ class Aframe extends Component {
 
                     {/* For some reason you have to have the clickable object in a container to make it more effective */}
                     <Entity id="container"
-                    position={this.state.boxPosition}
-                    geometry={{primitive: 'box'}}
-                    material={{transparent: true, opacity: 0} }>
+                        position={this.state.boxPosition}
+                        geometry={{primitive: 'box'}}
+                        material={{transparent: true, opacity: 0} }
+                        position={this.state.boxPosition}>
                         <Entity id="ship"
                             obj-model="obj: #ship-obj; mtl: #ship-mtl"
-                            position={this.state.boxPosition}
+
                             events={{click: this.counterIncrement}}
                             animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
                             scale={{'x':3, 'y':3, 'z':3}}
@@ -167,59 +186,18 @@ class Aframe extends Component {
                                 position={{'x':0, 'y':0.038, 'z':0.038}} 
                                 />
 
-                                
-
                         </Entity>
                     </Entity>
-
-
-                    <Entity 
-                        obj-model={{obj:'#cloud-obj'}}
-                        position={{'x':0, 'y':2, 'z':-3}}
-                        material={{color: 'white', opacity: 1}}
-                        animation__opacity={{property: 'material.opacity', dur:1000, to:0}}
-                    />
                    
+                    <Entity
+                        ref='cloud'
+                        obj-model={{obj:'#cloud-obj'}}
+                        position={this.state.cloudPosition}
+                        material={{color: 'white', opacity: 0}}
+                        animation__opacity={{property: 'material.opacity', restartEvents:"cloudReset", startEvents:'cloud',dur:1000, from:1, to:0}}
+                    />
 
-                    {/* animation__moveToNew={{
-                                property: 'position', 
-                                // dir: 'alternate', 
-                                dur: 1000, 
-                                // loop: true,
-                                start:'click',
-                                from:this.position,
-                                to: this.state.boxPosition
-                            }} */}
-
-
-                    {/* <Entity id="box"
-                        geometry={{primitive: this.state.shape}}
-                        material={{color: this.state.color, opacity: 0.6}}
-                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
-                        position={this.state.boxPosition}
-                        rotation={{x: 90, y: 90, z: 90}}
-                        events={{click: this.counterIncrement}}>
-                        
-                        <Entity 
-                            animation__scale={{
-                                property: 'scale', 
-                                dir: 'alternate', 
-                                dur: 100, 
-                                loop: true, 
-                                to: '2 2 2'
-                            }}
-                            geometry={{
-                                primitive: 'box', 
-                                depth: 0.2, 
-                                height: 0.2, 
-                                width: 0.2
-                            }}
-                            material={{color: '#24CAFF'}}/>
-                    </Entity> */}
-
-                    {/* wasd-controls-enabled="false" */}
-
-                    <Entity primitive="a-camera">
+                    <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
                             primitive="a-cursor" 
                         />

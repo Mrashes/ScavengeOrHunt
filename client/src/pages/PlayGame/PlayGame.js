@@ -74,14 +74,16 @@ class PlayGame extends Component {
         const destLon = this.state.destLon
 
         //makes a range of numbers for the reference
+        //This only works in the Northwestern hemisphere
         const latTruth = destLat-.0003<=this.state.currLat<=destLat+.0003
-        const lonTruth = destLon-.0003<=this.state.currLon<=destLon+.0003
+        const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
 
         //if location comparison correct then display the aframe environment
         if (latTruth && lonTruth) {
         
             //This vibrates indicating you got location
-            window.navigator.vibrate(200);
+            try{window.navigator.vibrate(200);} 
+            catch(e) {API.postErrors(e).catch(e => console.log(e))}
 
             //direct to aframe
             this.setState({
@@ -197,11 +199,11 @@ class PlayGame extends Component {
         return new Promise (
             (resolve, reject) => {
                 API.saveUserScore({
-                name: this.props.location.state.username,
-                hours: score.getUTCHours(),
-                minutes: score.getUTCMinutes(),
-                seconds: score.getUTCSeconds(),
-                gameid: this.props.location.state.gameId
+                    name: this.props.location.state.username,
+                    hours: score.getUTCHours(),
+                    minutes: score.getUTCMinutes(),
+                    seconds: score.getUTCSeconds(),
+                    gameid: this.props.location.state.gameId
                 }).then(res => {
                     console.log(res);
                     API.getScoreByGameId(this.props.location.state.gameId)
@@ -245,19 +247,25 @@ class PlayGame extends Component {
         }
         return(
             <div>
-                <p>Current Coords</p>
-                <p>{this.state.currLat}</p>
-                <p>{this.state.currLon}</p>
+                {
+                    (this.props.location.state.gameId.endsWith('Test')) ? 
+                    (<div>
+                        <p>Current Coords</p>
+                        <p>{this.state.currLat}</p>
+                        <p>{this.state.currLon}</p>
 
-                <p>Destination</p>
-                <p>{this.state.destLat}</p>
-                <p>{this.state.destLon}</p> 
+                        <p>Destination</p>
+                        <p>{this.state.destLat}</p>
+                        <p>{this.state.destLon}</p>
+                     </div>) : ("")
+                }
 
                 <Wrapper>
                     <Clue 
                         number={this.state.turn}
                         hint={this.state.destHint}
                         same={this.same}
+                        gameId={this.props.location.state.gameId}
                     />
                 </Wrapper>
             </div>
