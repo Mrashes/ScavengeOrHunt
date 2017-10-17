@@ -198,7 +198,8 @@ class Aframe extends Component {
 
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
-                            primitive="a-cursor" 
+                            primitive="a-cursor"
+                            material={{color: 'white'}}
                         />
                     </Entity>
 

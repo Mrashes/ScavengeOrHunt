@@ -12,7 +12,7 @@ import Story from '../../components/Story';
     //On enter
     //On move
 //TODO deal domain
-//TODO custom Models
+
 //TODO make new Chicago one for class
 
 //PreLoad.js to cache 
@@ -88,6 +88,8 @@ class PlayGame extends Component {
             //direct to aframe
             this.setState({
                 turn: this.state.turn+1,
+                destLat: 0,
+                destLon: 0,
                 redirect: true
             })
         }
