@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import ReactDOM  from 'react-dom'
 import './Aframe.css';
 import 'aframe';
 import 'aframe-animation-component';
+import API from '../../utils/API.js'
 import {Entity, Scene} from 'aframe-react';
 // import ShootSound from './../audio/shootSound.mp3'
+import carModel from '../../media/flyingCar/model.obj'
+import carMaterial from '../../media/flyingCar/materials.mtl'
+import penguinModel from '../../media/Penguin/model.obj'
+import penguinMaterial from '../../media/Penguin/materials.mtl'
 import cloudModel from '../../media/Cloud/model.obj'
 import cloudMaterial from '../../media/Cloud/materials.mtl'
 
@@ -16,8 +22,8 @@ class Aframe extends Component {
         shape: 'box',
         counter: 0,
         counterTarget: this.props.targetClicks,
-        boxPosition: {'id':0, 'x': 0, 'y': 2, 'z': -3},
-        cloudPosition: {}
+        boxPosition: {'id':0, 'x': 0, 'y': 1, 'z': -2},
+        // reticle: ""
     }
 
     componentDidMount() {
@@ -40,7 +46,12 @@ class Aframe extends Component {
         const counter = this.state.counter
 
         //This vibrates indicating you hit it
-        window.navigator.vibrate(200);
+        //There is an error on ios devices with vibrate so I set up this try catch to mitigate problem
+        try {window.navigator.vibrate(200)}
+        catch (e) {
+            console.log(e)
+            API.postErrors(e).catch(e => console.log(e))
+        }
 
         //move to another side
         this.moveBox()
@@ -50,19 +61,20 @@ class Aframe extends Component {
         }
     }
 
-    //Randomize how the shape looks
+    //Randomize how the shape looks &  moves it so its not in front of the player
     changeShapeProperties = () => {
         const shape = ['box','cone','cylinder','sphere', 'torus'];
         const color = ['red', 'orange', 'yellow', 'green', 'blue'];
         const randomShape = this.getRandomInt(0, shape.length-1);
         const randomColor = this.getRandomInt(0, color.length-1);
+        this.moveBox()
         this.setState({
             shape: shape[randomShape],
             color: color[randomColor]
         })
     }
 
-    //this bascially handles the shit
+    //this handles edge cases
     boxEdgeCase = (boxList, boxPos) =>  {
         //if id is zero find the biggest id
         if (boxPos["id"] === 0) {
@@ -84,7 +96,7 @@ class Aframe extends Component {
     //This sucks
     moveBox = () => {
         //list of all locations of box
-        const boxPosList = [{'id':0, 'x': 0, 'y': 2, 'z': -3}, {'id':1, 'x': -3, 'y': 2, 'z': 0}, {'id':2, 'x': 0, 'y': 2, 'z': 3}, {'id':3, 'x': 3, 'y': 2, 'z': 0}]
+        const boxPosList = [{'id':0, 'x': 0, 'y': 1.5, 'z': -3}, {'id':1, 'x': -3, 'y': 1.5, 'z': 0}, {'id':2, 'x': 0, 'y': 1.5, 'z': 3}, {'id':3, 'x': 3, 'y': 1.5, 'z': 0}]
         //current state of box
         const boxPosition = this.state.boxPosition
         //filter out current location
@@ -100,6 +112,15 @@ class Aframe extends Component {
             cloudPosition: boxPosition,
             boxPosition: nextBox[index]
         });
+
+        //cloud part
+        if (this.state.counter === 0){
+            return
+        }
+        else {
+            const animation = ReactDOM.findDOMNode(this.refs.cloud)
+            animation.emit('cloudReset')
+        }
     }
 
     //this finishes the aframe game
@@ -135,47 +156,50 @@ class Aframe extends Component {
             //https://github.com/ngokevin/aframe-react-boilerplate/blob/master/src/index.js
             <div>
                 <Scene>
-                    <a-asset>
+                    <a-assets>
+                        <a-asset-item id="ship-obj" src={carModel}></a-asset-item>
+                        <a-asset-item id="ship-mtl" src={carMaterial}></a-asset-item>
+                        <a-asset-item id="penguin-obj" src={penguinModel}></a-asset-item>
+                        <a-asset-item id="penguin-mtl" src={penguinMaterial}></a-asset-item>
                         <a-asset-item id="cloud-obj" src={cloudModel}></a-asset-item>
                         <a-asset-item id="cloud-mtl" src={cloudMaterial}></a-asset-item>
-                    </a-asset>
+                    </a-assets>
 
-                    <Entity id="box"
-                        geometry={{primitive: this.state.shape}}
-                        material={{color: this.state.color, opacity: 0.6}}
-                        animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
+                    {/* For some reason you have to have the clickable object in a container to make it more effective */}
+                    <Entity id="container"
                         position={this.state.boxPosition}
-                        rotation={{x: 90, y: 90, z: 90}}
+                        geometry={{primitive: 'box'}}
+                        material={{transparent: true, opacity: 0} }
+                        position={this.state.boxPosition}
                         events={{click: this.counterIncrement}}>
-                        
-                        <Entity 
-                            animation__scale={{
-                                property: 'scale', 
-                                dir: 'alternate', 
-                                dur: 100, 
-                                loop: true, 
-                                to: '2 2 2'
-                            }}
-                            geometry={{
-                                primitive: 'box', 
-                                depth: 0.2, 
-                                height: 0.2, 
-                                width: 0.2
-                            }}
-                            material={{color: '#24CAFF'}}/>
+                        <Entity id="ship"
+                            obj-model="obj: #ship-obj; mtl: #ship-mtl"
+                            animation__rotate={{property: 'rotation', dur: 7000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
+                            scale={{'x':3, 'y':3, 'z':3}}
+                            >
+                            <Entity 
+                                obj-model={{obj:'#penguin-obj', mtl: '#penguin-mtl'}}
+                                animation__rotate={{property: 'rotation', dur: 5000, easing: 'easeInOutSine', loop: true, to: '360 360 360'}}
+                                scale={{'x':.5,  'y':.5, 'z':.5}}
+                                rotation={{'x':0, 'y':0, 'z':0}}
+                                position={{'x':0, 'y':0.038, 'z':0.038}} 
+                                />
 
+                        </Entity>
                     </Entity>
-
-                    {/* <Entity 
+                   
+                    <Entity
+                        ref='cloud'
                         obj-model={{obj:'#cloud-obj'}}
                         position={this.state.cloudPosition}
-                        material={{color: 'white', opacity: 1}}
-                        animation__opacity={{property: 'material.opacity', startEvents:"",dur:1000, to:0}}
-                    /> */}
+                        material={{color: 'white', opacity: 0}}
+                        animation__opacity={{property: 'material.opacity', restartEvents:"cloudReset", startEvents:'cloud',dur:1000, from:1, to:0}}
+                    />
 
                     <Entity primitive="a-camera" wasd-controls-enabled="false">
                         <Entity 
-                            primitive="a-cursor" 
+                            primitive="a-cursor"
+                            material={{color: 'white'}}
                         />
                     </Entity>
 
