@@ -196,18 +196,18 @@ class NewGame extends Component {
                     </Button>  
                     <Button onClick = {this.handleSubmit}>
                         Submit
-                    </Button>   
-                    <div>
-                        <FormBtn 
-                            className="btn btn-success"
-                            role="button"
-                            to="/"
-                        >
-                            Home
-                        </FormBtn>  
-                    </div>                                                 
+                    </Button>                                                  
                 </form>
                 <p>To get Latitude/Longitude for a location in <a className="glink" href="https://www.google.com/maps" target="_new">Google maps</a>, right click and select what's here</p>
+                <div>
+                    <FormBtn 
+                        className="btn"
+                        role="button"
+                        to="/"
+                    >
+                        Home
+                    </FormBtn>  
+                </div>  
             </Wrapper>
         )
     }

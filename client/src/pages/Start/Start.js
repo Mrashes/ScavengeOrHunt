@@ -75,9 +75,11 @@ class Start extends Component {
     }
     return (
       <Wrapper>
-        <Header>
+        <Header className="start-header">
           <div>Scavenge</div>
+          <p></p>
           <div>Or</div>
+          <p></p>
           <div>Hunt</div>
         </Header>
         <p>{this.state.errtextId ? GAMEIDERROR : ""}</p>
@@ -102,7 +104,7 @@ class Start extends Component {
           />
           
           <FormBtn
-            className="btn btn-success"
+            className="btn"
             role="button"
             onClick={this.isGameidExists}
             to={{pathname: '/start'}}
@@ -112,7 +114,7 @@ class Start extends Component {
           </FormBtn>
         </form>
         <FormBtn 
-            className="btn btn-success"
+            className="btn"
             role="button"
             to="/"
         >

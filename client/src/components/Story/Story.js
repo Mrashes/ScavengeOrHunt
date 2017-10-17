@@ -1,11 +1,12 @@
 import React from "react";
 import Button from "../Button";
 import Wrapper from "../Wrapper";
+import "./Story.css";
 
 const Story = props => 
-    <div className="panel panel-default">
-        <div className="panel-heading">Directions</div>
-        <div className="panel-body">
+    <div>
+        <h1 className="header">Directions</h1>
+        <div className="directions">
             <p>They use to be 2d, but now they are back and better (worse?) than ever.  We present WHEN SHAPES ATTACK!</p>
             <p>
                 In a world, where society is at a boiling point... the last thing we needed was shapes getting in our way.  

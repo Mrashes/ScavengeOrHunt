@@ -249,7 +249,7 @@ class PlayGame extends Component {
         }
         return(
             <div>
-                {
+                {/* {
                     (this.props.location.state.gameId.endsWith('Test')) ? 
                     (<div>
                         <p>Current Coords</p>
@@ -260,7 +260,7 @@ class PlayGame extends Component {
                         <p>{this.state.destLat}</p>
                         <p>{this.state.destLon}</p>
                      </div>) : ("")
-                }
+                } */}
 
                 <Wrapper>
                     <Clue 

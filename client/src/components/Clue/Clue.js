@@ -4,13 +4,15 @@ import Button from "../Button";
 import Wrapper from "../Wrapper";
 
 const Clue = props => 
-    <div className="panel panel-default">
-        <div className="panel-heading">Clue #{props.number}</div>
-        <div className="panel-body">{props.hint}</div>
+    <div className="clue-wrapper">
+        <div className="inner">
+        <h1>Clue #{props.number}</h1>
+        <p>{props.hint}</p>
         {
             (props.gameId.endsWith('Test')) ? 
                 (<Button onClick={props.same}> Skip To Location </Button>) : ("")
         }
+        </div>
     </div>;
 
 export default Clue;

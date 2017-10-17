@@ -2,7 +2,7 @@ import React from "react";
 import "./Button.css";
 
 const Button = props => 
-    <button className="btn btn-success" {...props}>
+    <button className="btn" {...props}>
         {props.children}
     </button>;
 

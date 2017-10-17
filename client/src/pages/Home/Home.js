@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { FormBtn } from "../../components/Form";
 import Wrapper from "../../components/Wrapper";
 import Header from "../../components/Header";
+import "./Home.css";
 
 class Home extends Component {
   
@@ -17,7 +18,7 @@ class Home extends Component {
 render(){
   return(
     <Wrapper>
-      <Header>
+      <Header className="home-header">
         <div>Scavenge</div>
         <p> </p>
         <div>Or</div>
@@ -26,7 +27,7 @@ render(){
       </Header>
       <form>
         <FormBtn
-          className="btn btn-success"
+          className="btn"
           role="button"
           to="/create"
         >
@@ -35,7 +36,7 @@ render(){
         {/* {
           this.isMobile() ? ( */}
             <FormBtn
-              className="btn btn-success"
+              className="btn"
               role="button"
               to="/start"
             >
