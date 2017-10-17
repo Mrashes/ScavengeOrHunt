@@ -51,7 +51,7 @@ const EndGame = props => {
                 </tbody>
             </table>
             <FormBtn 
-                className="btn btn-success"
+                className="btn"
                 role="button"
                 to="/"
             >
