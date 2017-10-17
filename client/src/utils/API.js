@@ -24,4 +24,8 @@ export default {
     getAllScores: () => {
         return axios.get("/api/users/")
     },
+
+    postErrors: (error) => {
+        return axios.post("/api/errors/", error)
+    },
 }

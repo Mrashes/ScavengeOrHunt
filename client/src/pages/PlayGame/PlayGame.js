@@ -12,7 +12,7 @@ import Story from '../../components/Story';
     //On enter
     //On move
 //TODO deal domain
-//TODO custom Models
+
 //TODO make new Chicago one for class
 
 //PreLoad.js to cache 
@@ -82,11 +82,14 @@ class PlayGame extends Component {
         if (latTruth && lonTruth) {
         
             //This vibrates indicating you got location
-            window.navigator.vibrate(200);
+            try{window.navigator.vibrate(200);} 
+            catch(e) {API.postErrors(e).catch(e => console.log(e))}
 
             //direct to aframe
             this.setState({
                 turn: this.state.turn+1,
+                destLat: 0,
+                destLon: 0,
                 redirect: true
             })
         }
@@ -198,11 +201,11 @@ class PlayGame extends Component {
         return new Promise (
             (resolve, reject) => {
                 API.saveUserScore({
-                name: this.props.location.state.username,
-                hours: score.getUTCHours(),
-                minutes: score.getUTCMinutes(),
-                seconds: score.getUTCSeconds(),
-                gameid: this.props.location.state.gameId
+                    name: this.props.location.state.username,
+                    hours: score.getUTCHours(),
+                    minutes: score.getUTCMinutes(),
+                    seconds: score.getUTCSeconds(),
+                    gameid: this.props.location.state.gameId
                 }).then(res => {
                     console.log(res);
                     API.getScoreByGameId(this.props.location.state.gameId)
