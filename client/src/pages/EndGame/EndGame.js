@@ -37,7 +37,7 @@ const EndGame = props => {
                 </thead>
                 <tbody>
                     {props.location.state.data.map((user, index) => {
-                        if(index <= 10){
+                        if(index < 10){
                             return (
                                 <tr key={index}>
                                     <th className="number" scope="row">{index+1}</th>
@@ -46,6 +46,8 @@ const EndGame = props => {
                                     <td className="date">{formatDate(user.scoredate)}</td>
                                 </tr>
                             )
+                        } else {
+                            return;
                         }
                     })}
                 </tbody>
