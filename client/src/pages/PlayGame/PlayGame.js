@@ -32,6 +32,7 @@ class PlayGame extends Component {
         currLat: 0,
         currLon: 0,
         locations: [],
+        locationCounter: 0,
         destLat: 0,
         destLon: 0,
         destHint: "",
@@ -75,46 +76,50 @@ class PlayGame extends Component {
 
     compareLocations = () => {
 
-        // if (locationCounter === 0) {
-        //     this.setSatlocationCounter
-        // }
-        //alias creation
-        const destLat = this.state.destLat
-        const destLon = this.state.destLon
-
-        //makes a range of numbers for the reference
-        //This only works in the Northwestern hemisphere
-        const latTruth = destLat-.0003<=this.state.currLat && this.state.currLat<=destLat+.0003
-        const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
-
-        console.log(destLat)
-        console.log(this.state.currLat)
-        console.log(destLon)
-        console.log(this.state.currLon)
-        console.log(lonTruth)
-        console.log(latTruth)
-        console.log(latTruth && lonTruth)
-
-        if (destLat === 0) {
-            console.log('redirect')
-        }
-        //if location comparison correct then display the aframe environment
-        else if (latTruth && lonTruth) {
-
-            //This vibrates indicating you got location
-            try{window.navigator.vibrate(200);} 
-            catch(e) {API.postErrors(e).catch(e => console.log(e))}
-
-            //direct to aframe
+        if (this.state.locationCounter === 0) {
             this.setState({
-                turn: this.state.turn+1,
-                destLat: 0,
-                destLon: 0,
-                redirect: true
+                locationCounter: this.state.locationCounter+1
             })
         }
         else {
-            //Keep going
+            //alias creation
+            const destLat = this.state.destLat
+            const destLon = this.state.destLon
+
+            //makes a range of numbers for the reference
+            //This only works in the Northwestern hemisphere
+            const latTruth = destLat-.0003<=this.state.currLat && this.state.currLat<=destLat+.0003
+            const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
+
+            console.log(destLat)
+            console.log(this.state.currLat)
+            console.log(destLon)
+            console.log(this.state.currLon)
+            console.log(lonTruth)
+            console.log(latTruth)
+            console.log(latTruth && lonTruth)
+
+            if (destLat === 0) {
+                console.log('redirect')
+            }
+            //if location comparison correct then display the aframe environment
+            else if (latTruth && lonTruth) {
+
+                //This vibrates indicating you got location
+                try{window.navigator.vibrate(200);} 
+                catch(e) {API.postErrors(e).catch(e => console.log(e))}
+
+                //direct to aframe
+                this.setState({
+                    turn: this.state.turn+1,
+                    destLat: 0,
+                    destLon: 0,
+                    redirect: true
+                })
+            }
+            else {
+                //Keep going
+            }
         }
     }
 
@@ -152,6 +157,7 @@ class PlayGame extends Component {
             this.timeCompare()
         }
         else {
+            console.log('gettingDest')
             const turn = this.state.turn-1
     
             const lat = this.state.locations[turn].latitude

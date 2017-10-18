@@ -29,7 +29,7 @@ class Aframe extends Component {
 
     componentDidMount() {
         this.makeCamera()
-        this.changeShapeProperties()
+        this.changeShapeProperties() 
         this.props.destination()
     }
 
