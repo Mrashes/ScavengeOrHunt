@@ -181,13 +181,19 @@ class PlayGame extends Component {
         
         const geo_options = {
             enableHighAccuracy: true,
-            maximumAge        : Infinity, 
-            timeout           : Infinity
+            maximumAge        : 2000, 
+            timeout           : 2000
         };
+
+        const self = this
         
+        navigator.geolocation.watchPosition(geo_success.bind(self), geo_error, geo_options)
+
         //binds this so I can use another function
-        setInterval(function() { navigator.geolocation.getCurrentPosition(geo_success.bind(this), geo_error) }, 2000)
-        // navigator.geolocation.watchPosition(geo_success.bind(this), geo_error, geo_options);
+        setInterval(function() { 
+            navigator.geolocation.watchPosition(geo_success.bind(self), geo_error, geo_options); 
+        }, 3000)
+        
     }
 
 
