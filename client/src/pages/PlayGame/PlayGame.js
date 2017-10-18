@@ -55,7 +55,8 @@ class PlayGame extends Component {
     //Quick resolve for testing
     same = () => {
         this.setState({
-            redirect: true,
+            turn: this.state.turn+1,
+            redirect: true
         })
     }
     done = () => {
@@ -69,6 +70,7 @@ class PlayGame extends Component {
         this.setState({
             redirect: false
         })
+        this.getDestinationLocation()
     }
 
     //LOCATION based functions
@@ -90,13 +92,13 @@ class PlayGame extends Component {
             const latTruth = destLat-.0003<=this.state.currLat && this.state.currLat<=destLat+.0003
             const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
 
-            console.log(destLat)
-            console.log(this.state.currLat)
-            console.log(destLon)
-            console.log(this.state.currLon)
-            console.log(lonTruth)
-            console.log(latTruth)
-            console.log(latTruth && lonTruth)
+            // console.log(destLat)
+            // console.log(this.state.currLat)
+            // console.log(destLon)
+            // console.log(this.state.currLon)
+            // console.log(lonTruth)
+            // console.log(latTruth)
+            // console.log(latTruth && lonTruth)
 
             if (destLat === 0) {
                 console.log('redirect')
@@ -111,6 +113,8 @@ class PlayGame extends Component {
                 //direct to aframe
                 this.setState({
                     turn: this.state.turn+1,
+                    destLat: 0,
+                    destLon: 0,
                     redirect: true
                 })
             }
@@ -175,7 +179,6 @@ class PlayGame extends Component {
     //sets up a watch for the position
     getCurrentLocation = () => {
         function geo_success(position) {
-            console.log('sucess')
             this.setCurrLatLon(position.coords.latitude, position.coords.longitude)
                 .then(res => this.compareLocations())
                 .catch(e=>console.log(e))

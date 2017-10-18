@@ -30,7 +30,7 @@ class Aframe extends Component {
     componentDidMount() {
         this.makeCamera()
         this.changeShapeProperties() 
-        this.props.destination()
+        // this.props.destination()
     }
 
     getRandomInt = (min, max) => {
