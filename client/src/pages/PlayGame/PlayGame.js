@@ -76,7 +76,6 @@ class PlayGame extends Component {
     //LOCATION based functions
 
     compareLocations = () => {
-
         if (this.state.locationCounter === 0) {
             this.setState({
                 locationCounter: this.state.locationCounter+1
@@ -91,14 +90,6 @@ class PlayGame extends Component {
             //This only works in the Northwestern hemisphere
             const latTruth = destLat-.0003<=this.state.currLat && this.state.currLat<=destLat+.0003
             const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
-
-            // console.log(destLat)
-            // console.log(this.state.currLat)
-            // console.log(destLon)
-            // console.log(this.state.currLon)
-            // console.log(lonTruth)
-            // console.log(latTruth)
-            // console.log(latTruth && lonTruth)
 
             if (destLat === 0) {
                 console.log('redirect')
@@ -158,7 +149,7 @@ class PlayGame extends Component {
             this.timeCompare()
         }
         else {
-            console.log('gettingDest')
+            // console.log('gettingDest')
             const turn = this.state.turn-1
     
             const lat = this.state.locations[turn].latitude
@@ -195,7 +186,8 @@ class PlayGame extends Component {
         };
         
         //binds this so I can use another function
-        navigator.geolocation.watchPosition(geo_success.bind(this), geo_error, geo_options);
+        setInterval(function() { navigator.geolocation.getCurrentPosition(geo_success.bind(this), geo_error) }, 2000)
+        // navigator.geolocation.watchPosition(geo_success.bind(this), geo_error, geo_options);
     }
 
 
