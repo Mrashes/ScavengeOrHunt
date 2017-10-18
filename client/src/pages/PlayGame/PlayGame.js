@@ -88,8 +88,11 @@ class PlayGame extends Component {
 
             //makes a range of numbers for the reference
             //This only works in the Northwestern hemisphere
-            const latTruth = destLat-.0003<=this.state.currLat && this.state.currLat<=destLat+.0003
-            const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
+            // const latTruth = destLat-.0003<=this.state.currLat && this.state.currLat<=destLat+.0003
+            // const lonTruth = destLon-.0003>=this.state.currLon>=destLon+.0003
+
+            const latTruth = destLat === this.state.currLat
+            const lonTruth = destLon === this.state.currLon
 
             if (destLat === 0) {
                 console.log('redirect')
@@ -119,8 +122,8 @@ class PlayGame extends Component {
     setCurrLatLon = (lat, lon) =>{
         return new Promise (
             (resolve, reject) => {
-                const currlat = Math.round(10000*lat)/10000;
-                const currlon = Math.round(10000*lon)/10000;
+                const currlat = Math.round(1000*lat)/1000;
+                const currlon = Math.round(1000*lon)/1000;
                 this.setState({
                     currLat: currlat,
                     currLon: currlon
@@ -155,8 +158,8 @@ class PlayGame extends Component {
             const lat = this.state.locations[turn].latitude
             const lon = this.state.locations[turn].longitude
     
-            const destlat = Math.round(10000*lat)/10000;
-            const destlon = Math.round(10000*lon)/10000;
+            const destlat = Math.round(1000*lat)/1000;
+            const destlon = Math.round(1000*lon)/1000;
     
             this.setState({
                 destLat: destlat,
