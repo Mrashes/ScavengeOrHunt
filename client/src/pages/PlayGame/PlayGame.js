@@ -56,7 +56,6 @@ class PlayGame extends Component {
     same = () => {
         this.setState({
             redirect: true,
-            turn: this.state.turn+1,
         })
     }
     done = () => {
@@ -112,8 +111,6 @@ class PlayGame extends Component {
                 //direct to aframe
                 this.setState({
                     turn: this.state.turn+1,
-                    destLat: 0,
-                    destLon: 0,
                     redirect: true
                 })
             }
