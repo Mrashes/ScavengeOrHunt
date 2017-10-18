@@ -29,7 +29,7 @@ class Aframe extends Component {
 
     componentDidMount() {
         this.makeCamera()
-        this.changeShapeProperties()
+        this.changeShapeProperties() 
         this.props.destination()
     }
 
@@ -192,7 +192,6 @@ class Aframe extends Component {
                                 rotation={{'x':0, 'y':0, 'z':0}}
                                 position={{'x':0, 'y':0.038, 'z':0.038}} 
                                 />
-
                         </Entity>
                     </Entity>
                     {/* 
